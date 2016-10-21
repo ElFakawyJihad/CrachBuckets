@@ -1,4 +1,4 @@
-package model;
+package fr.univlille1.m2iagl.dureyelfakawi.model.parsing;
 
 import java.util.List;
 

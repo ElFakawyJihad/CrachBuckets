@@ -1,4 +1,4 @@
-package Crach.Crach;
+package fr.univlille1.m2iagl.dureyelfakawi.start;
 
 /**
  * Hello world!
