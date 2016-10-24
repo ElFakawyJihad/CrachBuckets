@@ -18,8 +18,10 @@ public class AnalyzeStacktrace {
 		buffered = new BufferedReader(reader);
 	}
 
-	public AnalyzeStacktrace() throws FileNotFoundException {
+	public AnalyzeStacktrace() {
 	}
+	
+	//TODO Recupéré Ligne et Lib 
 
 	private int getNumCouche(String line) {
 		int debutIndex = line.indexOf('#');
@@ -30,26 +32,31 @@ public class AnalyzeStacktrace {
 		}
 		return -1;
 	}
-	
-	public Method getMethod(String line){
+
+	public Method getMethod(String line) {
 		int index;
-		if ((index=line.indexOf("in"))!=-1){
-			String nameMethod=line.substring(index+2);
-			int finMethod=nameMethod.indexOf('(');
-			String nameMethodWithoutParam=nameMethod.substring(0,finMethod);
-			int finParam=nameMethod.indexOf(')');
-			String params=nameMethod.substring(finMethod+1,finParam);
+		if ((index = line.indexOf("in")) != -1) {
+			// On recupere le nom de la methode
+			String nameMethod = line.substring(index + 2);
+			int finMethod = nameMethod.indexOf('(');
+			String nameMethodWithoutParam = nameMethod.substring(0, finMethod);
+			// --------------------------------------------------
+			// On récupére les Paramètres------------------------
+			int finParam = nameMethod.indexOf(')');
+			String params = nameMethod.substring(finMethod + 1, finParam);
 			ArrayList<Parameter> parametres = getParametres(params);
 			return new Method(nameMethodWithoutParam, parametres);
 		}
 		return null;
 	}
-	
-	public ArrayList<Parameter> getParametres(String param){
-		ArrayList<Parameter> retour=new ArrayList<Parameter>();
-		String[] params=param.split(",");
-		for (int i=0;i<params.length;i++){
-			String nomParam=params[i].split("=")[0];
+
+	public ArrayList<Parameter> getParametres(String param) {
+		// On récupere les differents paramètres
+		ArrayList<Parameter> retour = new ArrayList<Parameter>();
+		String[] params = param.split(",");
+		for (int i = 0; i < params.length; i++) {
+			// On récupére les paramétres
+			String nomParam = params[i].split("=")[0];
 			retour.add(new Parameter(nomParam.trim()));
 		}
 		return retour;
@@ -73,6 +80,7 @@ public class AnalyzeStacktrace {
 		String line = this.buffered.readLine();
 		String actuel = "";
 		while ((actuel = this.buffered.readLine()) != null) {
+			//On récupére chaque ligne du fichier
 			line = line + actuel + "\n";
 		}
 		return line;
