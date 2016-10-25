@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.FilePath;
+import fr.univlille1.m2iagl.dureyelfakawi.action.Factory;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Parameter;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 
 /**
  * 
@@ -165,6 +168,39 @@ public class AnalyzeStacktrace {
 			line = line + actuel + "\n";
 		}
 		return line;
+	}
+	
+	public Stacktrace buildStacktrace(List<String> couchesString){
+		
+		Stacktrace stacktrace = Factory.createEmptyStacktrace();
+		
+		for(String coucheString : couchesString){
+			
+			Couche couche = buildCouche(coucheString);
+			
+			int numCouche = getNumCouche(coucheString);
+			
+			stacktrace.put(numCouche, couche);
+			
+			
+		}
+		
+		return stacktrace;
+		
+	}
+	
+	public Couche buildCouche(String coucheString){
+		
+		int numCouche = getNumCouche(coucheString);
+		
+		Method method = getMethod(coucheString);
+		
+		
+		
+		Couche couche = null;
+		
+		return couche;
+		
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {

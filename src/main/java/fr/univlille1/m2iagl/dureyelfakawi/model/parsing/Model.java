@@ -27,11 +27,11 @@ public class Model {
 		buckets.put(num, bucket);
 	}
 	
-	public Set<Integer> keySet(){
+	public Set<Integer> bucketKeySet(){
 		return buckets.keySet();
 	}
 	
-	public Bucket get(int num){
+	public Bucket getBucket(int num){
 		return buckets.get(num);
 	}
 

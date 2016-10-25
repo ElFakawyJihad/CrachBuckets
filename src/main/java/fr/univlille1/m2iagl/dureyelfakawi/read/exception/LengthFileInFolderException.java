@@ -1,4 +1,4 @@
-package fr.univlille1.m2iagl.dureyelfakawi.read;
+package fr.univlille1.m2iagl.dureyelfakawi.read.exception;
 /**
  * 
  *Classe d'exception si le sous dossier contient plus(ou moins) d'un fichier .
@@ -6,6 +6,6 @@ package fr.univlille1.m2iagl.dureyelfakawi.read;
  *Régle:Chaque Sous dossier contenu dans un Buckets contient un seul fichier (nommée Stacktrace).
  *
  */
-public class LengthFileInFolder extends Exception {
+public class LengthFileInFolderException extends Exception {
 
 }

@@ -1,10 +1,12 @@
 package fr.univlille1.m2iagl.dureyelfakawi.action;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import fr.univlille1.m2iagl.dureyelfakawi.model.analysis.ValuesDecided;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Bucket;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Model;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 
@@ -32,22 +34,80 @@ public class BucketDecideur {
 	
 	public int decideStacktrace(Stacktrace stacktrace){
 		
-		Set<Integer> keys = model.keySet();
+		Map<Integer, Integer> values = new HashMap<Integer, Integer>();
 		
-	//	Map<Integer, Integer>
+		for(int bucketKey : model.bucketKeySet()){
+			Bucket bucket = model.getBucket(bucketKey);
+			values.put(bucketKey, getStacktracePointsAccordingToBucket(stacktrace, bucket));
+		}
 		
-		return 4;
+		
+		return Helper.getBestBucket(values);
 	}
 	
-	public int getStacktracePointsAccordingToBucket(Stacktrace toBeFitted, Bucket bucket){
-		Set<Integer> keys = bucket.keySet();
-		for(int key : keys){
-			Stacktrace stacktrace = bucket.get(key);
+	public int getStacktracePointsAccordingToBucket(Stacktrace toBeAttributed, Bucket bucket){
+		
+		int points = 0;
+		for(int key : bucket.keySet()){
+			Stacktrace stacktraceFromBucket = bucket.get(key);
 			
-			
+			points += getPointsBetweenTwoStacktraces(stacktraceFromBucket, toBeAttributed);
 		}
 				
-		return 0;
+		return points;
+	}
+	
+	public int getPointsBetweenTwoStacktraces(Stacktrace stacktraceFromBucket, Stacktrace stacktraceToBeAttributed){
 		
+		int points = 0;
+		
+		for(int coucheIdFromBucket : stacktraceFromBucket.keySet()){
+			Couche coucheFromBucket = stacktraceFromBucket.getCouche(coucheIdFromBucket);
+			
+			for(int coucheIdFromToBeAttributed : stacktraceToBeAttributed.keySet()){
+				Couche coucheFromToBeAttributed = stacktraceToBeAttributed.getCouche(coucheIdFromToBeAttributed);
+				
+				points += getPointsBetweenTwoCouches(coucheFromBucket, coucheFromToBeAttributed);
+			}
+		}
+		
+		return points;
+	}
+	
+	public int getPointsBetweenTwoCouches(Couche coucheFromBucket, Couche coucheToBeAttributed){
+		int points = 0;
+		
+		/*
+		String filePathFromBucket = coucheFromBucket.getFilePath(),
+				filePathFromToBeAttributed = coucheToBeAttributed.getFilePath();
+		
+		points += Helper.getPointsFromNameSimilitude(filePathFromBucket, filePathFromToBeAttributed);
+		*/
+		String libPathFromBucket = coucheFromBucket.getLibPath(),
+				libPathFromToBeAttributed = coucheToBeAttributed.getLibPath();
+		
+		points += Helper.getPointsFromNameSimilitude(libPathFromBucket, libPathFromToBeAttributed);
+		
+		Method methodFromBucket = coucheFromBucket.getMethod(),
+				methodFromToBeAttributed = coucheToBeAttributed.getMethod();
+		
+		points += getPointsBetweenTwoMethods(methodFromBucket, methodFromToBeAttributed);			
+		
+		
+		return points;
+		
+	}
+	
+	public int getPointsBetweenTwoMethods(Method methodFromBucket, Method methodFromToBeAttributed){
+		
+		
+		int points = 0;
+		
+		String methodNameFromBucket = methodFromBucket.getName(),
+				methodNameFromToBeAttributed = methodFromToBeAttributed.getName();
+		
+		points += Helper.getPointsFromNameSimilitude(methodNameFromBucket, methodNameFromToBeAttributed);
+		
+		return points;
 	}
 }

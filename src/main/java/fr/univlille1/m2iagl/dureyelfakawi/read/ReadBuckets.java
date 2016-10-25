@@ -9,18 +9,29 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndBucketsException;
+import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndElementsInBucketsException;
+import fr.univlille1.m2iagl.dureyelfakawi.read.exception.LengthFileInFolderException;
+import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NoStackTraceFileException;
+
 public class ReadBuckets {
 	private File[] buckets;
 	private int position;
-	private int nbfolder;
+	private int nbFolders;
 
 	/**
 	 * Fonction qui ouvre le dossier contenant les Buckets.
 	 */
-	private void openFolder() {
-		File file = new File(Constantes.LOCATIONBUCKETS);
+	public void openFolder() {
+		File file = new File(Constantes.LOCATION_BUCKETS);
 		buckets = file.listFiles();
-		nbfolder = buckets.length;
+		nbFolders = buckets.length;
+	}
+	
+	
+	
+	public boolean hasNextFolder(){
+		return position < nbFolders;
 	}
 
 	/**
@@ -29,7 +40,7 @@ public class ReadBuckets {
 	 * @throws EndBucketsException
 	 *             si les buckets ont tous été traités.
 	 */
-	private File nextFolder() throws EndBucketsException {
+	public File nextFolder() throws EndBucketsException {
 		// Si on à pas encore ouvert l'ensemble des dossiers contenant les
 		// Buckets.
 		if (buckets == null) {
@@ -39,7 +50,7 @@ public class ReadBuckets {
 		}
 		// Si il reste encore des Buckets.
 		position++;
-		if (position < nbfolder) {
+		if (position < nbFolders) {
 			return buckets[position];
 		}
 		// Alors les fichiers sont terminers.
@@ -51,16 +62,16 @@ public class ReadBuckets {
 	 * 
 	 * @param args
 	 * @throws EndBucketsException
-	 * @throws LengthFileInFolder
-	 * @throws NoStackTraceFile
-	 * @throws EndElementsInBuckets
+	 * @throws LengthFileInFolderException
+	 * @throws NoStackTraceFileException
+	 * @throws EndElementsInBucketsException
 	 * @throws IOException
 	 */
 	public static void main(String[] args)
-			throws EndBucketsException, LengthFileInFolder, NoStackTraceFile, EndElementsInBuckets, IOException {
+			throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException {
 		ReadBuckets reader = new ReadBuckets();
 		File buckets = reader.nextFolder();
-		ReadStacktrace stactrace = new ReadStacktrace(buckets);
+		ReadStacktraces stactrace = new ReadStacktraces(buckets);
 		stactrace.nextFile();
 		stactrace.nextFile();
 		AnalyzeStacktrace analyze = new AnalyzeStacktrace(stactrace.nextFile());
