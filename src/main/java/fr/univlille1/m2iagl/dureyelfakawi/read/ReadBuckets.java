@@ -1,3 +1,6 @@
+/**
+ * Classe qui lit les Buckets.
+ */
 package fr.univlille1.m2iagl.dureyelfakawi.read;
 
 import java.io.BufferedReader;
@@ -11,12 +14,21 @@ public class ReadBuckets {
 	private int position;
 	private int nbfolder;
 
+	/**
+	 * Fonction qui ouvre le dossier contenant les Buckets.
+	 */
 	private void openFolder() {
-		File file = new File(Constantes.READ);
+		File file = new File(Constantes.LOCATIONBUCKETS);
 		buckets = file.listFiles();
 		nbfolder = buckets.length;
 	}
 
+	/**
+	 * 
+	 * @return renvoie le prochain buckets.
+	 * @throws EndBucketsException
+	 *             si les buckets ont tous été traités.
+	 */
 	private File nextFolder() throws EndBucketsException {
 		// Si on à pas encore ouvert l'ensemble des dossiers contenant les
 		// Buckets.
@@ -34,6 +46,16 @@ public class ReadBuckets {
 		throw new EndBucketsException();
 	}
 
+	/**
+	 * Main de test
+	 * 
+	 * @param args
+	 * @throws EndBucketsException
+	 * @throws LengthFileInFolder
+	 * @throws NoStackTraceFile
+	 * @throws EndElementsInBuckets
+	 * @throws IOException
+	 */
 	public static void main(String[] args)
 			throws EndBucketsException, LengthFileInFolder, NoStackTraceFile, EndElementsInBuckets, IOException {
 		ReadBuckets reader = new ReadBuckets();
@@ -42,7 +64,7 @@ public class ReadBuckets {
 		stactrace.nextFile();
 		stactrace.nextFile();
 		AnalyzeStacktrace analyze = new AnalyzeStacktrace(stactrace.nextFile());
-		System.out.println(analyze.getMethod(analyze.initCouchesList().get(0)));
+		System.out.println(analyze.getLibFrom(analyze.initCouchesList().get(7)));
 		System.out.println(reader.nextFolder().getName());
 	}
 }

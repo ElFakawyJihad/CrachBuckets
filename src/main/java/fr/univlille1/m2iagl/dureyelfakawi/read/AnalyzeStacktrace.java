@@ -7,12 +7,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.FilePath;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Parameter;
 
+/**
+ * 
+ * Classe qui permet l'analyse du fichier de StackTrace
+ *
+ */
 public class AnalyzeStacktrace {
 	private BufferedReader buffered;
+	// Ligne du probléme
+	private int ligneFrom;
 
+	/**
+	 * 
+	 * @param stacktrace
+	 *            le fichier de trace à analyser
+	 * @throws FileNotFoundException
+	 *             renvoie une erreur si le fichier n'existe pas
+	 */
 	public AnalyzeStacktrace(File stacktrace) throws FileNotFoundException {
 		FileReader reader = new FileReader(stacktrace);
 		buffered = new BufferedReader(reader);
@@ -20,9 +35,51 @@ public class AnalyzeStacktrace {
 
 	public AnalyzeStacktrace() {
 	}
-	
-	//TODO Recupéré Ligne et Lib 
 
+	/*
+	// TODO Recupéré Ligne et Lib
+	public FilePath getPath(){
+		
+	}
+	*/
+
+	/**
+	 * 
+	 * @param line
+	 *            couche contenant un lib
+	 * @return la librairie from appelé.
+	 */
+	public String getLibFrom(String line) {
+		int index;
+		if ((index = line.indexOf("from")) != -1) {
+			String fromLib = line.substring(index + 4);
+			int fin = fromLib.indexOf("so");
+			if (fin != -1) {
+				ligneFrom = Integer.parseInt(fromLib.substring(fin + 2));
+				return fromLib.substring(0, fin + 2);
+			} else {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param line
+	 *            la couche concernée
+	 * @return renvoie la ligne pour un from
+	 */
+	public int getLigne(String line) {
+		getLibFrom(line);
+		return this.ligneFrom;
+	}
+
+	/***
+	 * 
+	 * @param line
+	 *            la couche concernée
+	 * @return renvoie le niveau de couche
+	 */
 	private int getNumCouche(String line) {
 		int debutIndex = line.indexOf('#');
 		if (debutIndex != -1) {
@@ -33,6 +90,12 @@ public class AnalyzeStacktrace {
 		return -1;
 	}
 
+	/**
+	 * 
+	 * @param line
+	 *            la couche concernée
+	 * @return renvoie la méthode contenant son nom et les noms des paramètres
+	 */
 	public Method getMethod(String line) {
 		int index;
 		if ((index = line.indexOf("in")) != -1) {
@@ -50,7 +113,13 @@ public class AnalyzeStacktrace {
 		return null;
 	}
 
-	public ArrayList<Parameter> getParametres(String param) {
+	/**
+	 * 
+	 * @param param
+	 *            contient l'ensemble des paramètres (nom+valeur)
+	 * @return Listes des noms de paramètres .
+	 */
+	private ArrayList<Parameter> getParametres(String param) {
 		// On récupere les differents paramètres
 		ArrayList<Parameter> retour = new ArrayList<Parameter>();
 		String[] params = param.split(",");
@@ -62,6 +131,12 @@ public class AnalyzeStacktrace {
 		return retour;
 	}
 
+	/**
+	 * 
+	 * @return l'ensemble des couches concernée
+	 * @throws IOException
+	 *             retourne une exception si le fichier est vide.
+	 */
 	public ArrayList<String> initCouchesList() throws IOException {
 		ArrayList<String> couchesListes = new ArrayList<String>();
 		String couches = this.initCouches();
@@ -76,11 +151,17 @@ public class AnalyzeStacktrace {
 		return couchesListes;
 	}
 
+	/**
+	 * 
+	 * @return on récupére l'ensemble des lignes de la stacktrace
+	 * @throws IOException
+	 *             retourne une exception si le fichier est vide.
+	 */
 	private String initCouches() throws IOException {
-		String line = this.buffered.readLine();
+		String line = "";
 		String actuel = "";
 		while ((actuel = this.buffered.readLine()) != null) {
-			//On récupére chaque ligne du fichier
+			// On récupére chaque ligne du fichier
 			line = line + actuel + "\n";
 		}
 		return line;
