@@ -2,7 +2,7 @@ package fr.univlille1.m2iagl.dureyelfakawi.model.parsing;
 
 public class Couche {
 
-	private String filePath;
+	private FilePath filePath;
 	
 	private String libPath;
 	
@@ -12,15 +12,15 @@ public class Couche {
 	
 	private int line;
 	
-	public Couche(String filePath, String libPath, Method method, int numCouche, int line){
+	public Couche(FilePath  filePath, String libPathFrom,Method method, int numCouche, int line){
 		this.filePath = filePath;
-		this.libPath = libPath;
+		this.libPath = libPathFrom;
 		this.method = method;
 		this.numCouche = numCouche;
 		this.line = line;
 	}
 
-	public String getFilePath() {
+	public FilePath getFilePath() {
 		return filePath;
 	}
 
