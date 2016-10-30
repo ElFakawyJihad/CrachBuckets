@@ -36,12 +36,28 @@ public class AnalyzeStacktrace {
 	public AnalyzeStacktrace() {
 	}
 
-	/*
 	// TODO Recupéré Ligne et Lib
-	public FilePath getPath(){
-		
+	public FilePath getPath(String line) {
+		int index;
+		if ((index = line.indexOf("at")) != -1) {
+			int terminer = line.indexOf(".c");
+			if (terminer != -1) {
+				line.substring(index, terminer+2);
+				
+			}
+		}
+		return null;
+
 	}
-	*/
+	//A finir
+	public ArrayList<Parameter> getParametersPath(String parameters){
+		ArrayList<Parameter> parametersList=new ArrayList<Parameter>();
+		if (parameters.contains(Constantes.NOLOCALS)){
+			return parametersList;
+		}
+		parameters.split("");
+		return parametersList;
+	}
 
 	/**
 	 * 
