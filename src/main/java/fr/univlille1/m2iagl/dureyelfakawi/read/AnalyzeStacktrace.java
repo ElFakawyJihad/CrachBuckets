@@ -6,10 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+import fr.univlille1.m2iagl.dureyelfakawi.action.Factory;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.FilePath;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Parameter;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 
 /**
  * 
@@ -42,27 +46,26 @@ public class AnalyzeStacktrace {
 		if ((index = line.indexOf("at")) != -1) {
 			int terminer = line.indexOf(".c");
 			if (terminer != -1) {
-				line.substring(index, terminer+2);
-				
+				line.substring(index, terminer + 2);
+
 			}
 		}
 		return null;
-
-	}
-	//A finir
-	public ArrayList<Parameter> getParametersPath(String parameters){
-		ArrayList<Parameter> parametersList=new ArrayList<Parameter>();
-		if (parameters.contains(Constantes.NOLOCALS)){
-			return parametersList;
-		}
-		parameters.split("");
-		return parametersList;
 	}
 
-	/**
+	/*
+	 * // TODO Recupérer Ligne et Lib public FilePath getPath(){
 	 * 
-	 * @param line
-	 *            couche contenant un lib
+	 * >>>>>>> refs/remotes/origin/master } //A finir public
+	 * ArrayList<Parameter> getParametersPath(String parameters){
+	 * ArrayList<Parameter> parametersList=new ArrayList<Parameter>(); if
+	 * (parameters.contains(Constantes.NOLOCALS)){ return parametersList; }
+	 * parameters.split(""); return parametersList; }
+	 * 
+	 * /**
+	 * 
+	 * @param line couche contenant un lib
+	 * 
 	 * @return la librairie from appelé.
 	 */
 	public String getLibFrom(String line) {
@@ -96,7 +99,7 @@ public class AnalyzeStacktrace {
 	 *            la couche concernée
 	 * @return renvoie le niveau de couche
 	 */
-	private int getNumCouche(String line) {
+	public int getNumCouche(String line) {
 		int debutIndex = line.indexOf('#');
 		if (debutIndex != -1) {
 			int finIndex = line.indexOf(' ');
@@ -181,6 +184,23 @@ public class AnalyzeStacktrace {
 			line = line + actuel + "\n";
 		}
 		return line;
+	}
+
+	public Couche buildCouche(String coucheString) {
+
+		int numCouche = getNumCouche(coucheString);
+
+		Method method = getMethod(coucheString);
+
+		int line = getLigne(coucheString);
+
+		String lib = getLibFrom(coucheString);
+
+		// rajouter le filepath
+		FilePath filePath = null;
+
+		return Factory.createCouche(filePath, lib, method, numCouche, line);
+
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {

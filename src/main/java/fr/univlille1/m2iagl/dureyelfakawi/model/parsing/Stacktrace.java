@@ -20,7 +20,7 @@ public class Stacktrace {
 		return couches.keySet();
 	}
 	
-	public Couche get(int num){
+	public Couche getCouche(int num){
 		return couches.get(num);
 	}
 
