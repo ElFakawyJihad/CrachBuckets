@@ -14,7 +14,7 @@ import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndElementsInBucketsExc
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.LengthFileInFolderException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NoStackTraceFileException;
 
-public class ReadBuckets {
+public class BucketsReader {
 	private File[] buckets;
 	private int position;
 	private int nbFolders;
@@ -51,6 +51,8 @@ public class ReadBuckets {
 		// Si il reste encore des Buckets.
 		position++;
 		if (position < nbFolders) {
+			
+			System.out.println("Bucket file : " + buckets[position]);
 			return buckets[position];
 		}
 		// Alors les fichiers sont terminers.
@@ -69,9 +71,9 @@ public class ReadBuckets {
 	 */
 	public static void main(String[] args)
 			throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException {
-		ReadBuckets reader = new ReadBuckets();
+		BucketsReader reader = new BucketsReader();
 		File buckets = reader.nextFolder();
-		ReadStacktraces stactrace = new ReadStacktraces(buckets);
+		StacktracesReader stactrace = new StacktracesReader(buckets);
 		stactrace.nextFile();
 		stactrace.nextFile();
 		AnalyzeStacktrace analyze = new AnalyzeStacktrace(stactrace.nextFile());

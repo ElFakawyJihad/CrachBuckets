@@ -14,13 +14,14 @@ public class BucketDecideur {
 
 	
 	private Model model;
+	private ValuesDecided valuesDecided;
 	
 	public BucketDecideur(Model model){
 		this.model = model;
+		this.valuesDecided = new ValuesDecided();
 	}
 	
 	public ValuesDecided decide(Map<Integer, Stacktrace> toBeAttributed){
-		ValuesDecided valuesDecided = new ValuesDecided();
 	
 		for(Integer key : toBeAttributed.keySet()){
 			Stacktrace stacktrace = toBeAttributed.get(key);

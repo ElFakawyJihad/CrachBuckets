@@ -6,15 +6,32 @@ import java.util.Set;
 
 public class Bucket {
 	
+	private int stacktraceNb = 0;
+	
+	private int bucketNb;
+	
 	private Map<Integer, Stacktrace> stacktraces;
 	
 	public Bucket(){
 		this.stacktraces = new HashMap<>();
 	}
 	
-	public void addStacktrace(int num, Stacktrace stacktrace){
-		this.stacktraces.put(num, stacktrace);
+	public Bucket(int bucketNb){
+		this.stacktraces = new HashMap<>();
+		setBucketNb(bucketNb);
+	}
+	
+	public void setBucketNb(int bucketNb){
+		this.bucketNb = bucketNb;
+	}
+	
+	public void addStacktrace(Stacktrace stacktrace){
+		this.stacktraces.put(stacktraceNb++, stacktrace);
 		
+	}
+	
+	public void putStacktrace(int i, Stacktrace stacktrace){
+		this.stacktraces.put(i, stacktrace);
 	}
 	
 	public Set<Integer> keySet(){

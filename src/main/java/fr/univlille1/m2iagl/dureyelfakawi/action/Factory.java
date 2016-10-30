@@ -9,8 +9,8 @@ import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 public class Factory {
 
 
-	public static Bucket createEmptyBucket(){
-		return new Bucket();
+	public static Bucket createEmptyBucket(int bucketNb){
+		return new Bucket(bucketNb);
 	}
 	
 	
@@ -19,6 +19,10 @@ public class Factory {
 			return Factory.createCoucheWithFilePath(filePath, method, numCouche, line);
 		} else if(filePath == null && lib != null){
 			return Factory.createCoucheWithLibPath(lib, method, numCouche, line);
+		} else {
+			return new Couche(filePath, lib, method, numCouche, line);
+			// TODO : To be changed to the following line later
+			// throw new NoSuchElementException("Cannot create Couche with filePath AND libPath");
 		}
 	}
 	

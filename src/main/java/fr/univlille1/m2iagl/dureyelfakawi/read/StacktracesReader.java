@@ -11,7 +11,7 @@ import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NoStackTraceFileExcepti
  * Classe qui va récuperer les Stractrace d'un buckets.
  *
  */
-public class ReadStacktraces {
+public class StacktracesReader {
 	private File[] folder;
 	private int nbFiles;
 	private int position;
@@ -20,9 +20,9 @@ public class ReadStacktraces {
 	 * @param bucketFolder
 	 *            dossier contenant les différentes Stacktrace.
 	 */
-	public ReadStacktraces(File bucketFolder) {
+	public StacktracesReader(File bucketFolder) {
 		this.folder = bucketFolder.listFiles();
-		position = -1;
+		position = 0;
 		nbFiles = bucketFolder.listFiles().length;
 	}
 	
@@ -42,9 +42,10 @@ public class ReadStacktraces {
 	 *             plus d'éléments dans le Buckets
 	 */
 	public File nextFile() throws LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException {
-		position++;
 		if (position < nbFiles) {
 			File file = this.folder[position];
+			
+			position++;
 			return getStacktrace(file);
 		} else {
 			throw new EndElementsInBucketsException();

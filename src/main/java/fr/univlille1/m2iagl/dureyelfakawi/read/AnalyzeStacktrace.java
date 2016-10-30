@@ -10,6 +10,7 @@ import java.util.List;
 
 import fr.univlille1.m2iagl.dureyelfakawi.action.Factory;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
+import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.FilePath;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Parameter;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
@@ -40,7 +41,7 @@ public class AnalyzeStacktrace {
 	}
 
 	/*
-	// TODO Recupéré Ligne et Lib
+	// TODO Recupérer Ligne et Lib
 	public FilePath getPath(){
 		
 	}
@@ -83,7 +84,7 @@ public class AnalyzeStacktrace {
 	 *            la couche concernée
 	 * @return renvoie le niveau de couche
 	 */
-	private int getNumCouche(String line) {
+	public int getNumCouche(String line) {
 		int debutIndex = line.indexOf('#');
 		if (debutIndex != -1) {
 			int finIndex = line.indexOf(' ');
@@ -170,24 +171,6 @@ public class AnalyzeStacktrace {
 		return line;
 	}
 	
-	public Stacktrace buildStacktrace(List<String> couchesString){
-		
-		Stacktrace stacktrace = Factory.createEmptyStacktrace();
-		
-		for(String coucheString : couchesString){
-			
-			Couche couche = buildCouche(coucheString);
-			
-			int numCouche = getNumCouche(coucheString);
-			
-			stacktrace.put(numCouche, couche);
-			
-			
-		}
-		
-		return stacktrace;
-		
-	}
 	
 	public Couche buildCouche(String coucheString){
 		
@@ -195,11 +178,15 @@ public class AnalyzeStacktrace {
 		
 		Method method = getMethod(coucheString);
 		
+		int line = getLigne(coucheString);
+		
+		String lib = getLibFrom(coucheString);
+		
+		// rajouter le filepath
+		FilePath filePath = null;
 		
 		
-		Couche couche = null;
-		
-		return couche;
+		return Factory.createCouche(filePath, lib, method, numCouche, line);
 		
 	}
 
