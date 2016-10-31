@@ -25,6 +25,9 @@ public class StacktracesReader {
 		position = 0;
 		nbFiles = bucketFolder.listFiles().length;
 	}
+	public String getName(){
+		return this.folder[position].getName();
+	}
 	
 	
 	public boolean hasNextFile(){

@@ -53,18 +53,37 @@ public class AnalyzeStacktrace {
 		return null;
 	}
 
-	/*
-	 * // TODO Recupérer Ligne et Lib public FilePath getPath(){
+	ArrayList<Parameter> getParametersPath(String parameters) {
+		ArrayList<Parameter> parametersList = new ArrayList<Parameter>();
+		if (parameters.contains(Constantes.NOLOCALS)) {
+			return parametersList;
+		}
+		String[] differentsParam = parameters.split("/n");
+		int length = differentsParam.length;
+		for (int i = 0; i < length; i++) {
+			String[] s = differentsParam[i].split("=");
+			parametersList.add(new Parameter(s[0]));
+		}
+		return parametersList;
+	}
+
+	private int recupLigne(String line) {
+		String num = "";
+		int length = line.length();
+		for (int i = 0; i < length; i++) {
+			char c = line.charAt(i);
+			if (c == ' ' || c == '\n' || c == '.') {
+				return Integer.parseInt(num);
+			}
+			num = num + line.charAt(i);
+		}
+		return Integer.parseInt(num);
+	}
+
+	/**
 	 * 
-	 * >>>>>>> refs/remotes/origin/master } //A finir public
-	 * ArrayList<Parameter> getParametersPath(String parameters){
-	 * ArrayList<Parameter> parametersList=new ArrayList<Parameter>(); if
-	 * (parameters.contains(Constantes.NOLOCALS)){ return parametersList; }
-	 * parameters.split(""); return parametersList; }
-	 * 
-	 * /**
-	 * 
-	 * @param line couche contenant un lib
+	 * @param line
+	 *            couche contenant un lib
 	 * 
 	 * @return la librairie from appelé.
 	 */
@@ -72,9 +91,15 @@ public class AnalyzeStacktrace {
 		int index;
 		if ((index = line.indexOf("from")) != -1) {
 			String fromLib = line.substring(index + 4);
-			int fin = fromLib.indexOf("so");
+			int fin = fromLib.indexOf("so.");
 			if (fin != -1) {
-				ligneFrom = Integer.parseInt(fromLib.substring(fin + 2));
+				if (fromLib.contains("so.")) {
+					String resteligne = "";
+					resteligne = fromLib.substring(fin + 3);
+					ligneFrom = recupLigne(resteligne);
+				} else {
+					ligneFrom = -1;
+				}
 				return fromLib.substring(0, fin + 2);
 			} else {
 				return null;
@@ -117,9 +142,9 @@ public class AnalyzeStacktrace {
 	 */
 	public Method getMethod(String line) {
 		int index;
-		if ((index = line.indexOf("in")) != -1) {
+		if ((index = line.indexOf(" in ")) != -1) {
 			// On recupere le nom de la methode
-			String nameMethod = line.substring(index + 2);
+			String nameMethod = line.substring(index + 4);
 			int finMethod = nameMethod.indexOf('(');
 			String nameMethodWithoutParam = nameMethod.substring(0, finMethod);
 			// --------------------------------------------------
@@ -156,19 +181,15 @@ public class AnalyzeStacktrace {
 	 * @throws IOException
 	 *             retourne une exception si le fichier est vide.
 	 */
-	public ArrayList<String> initCouchesList() throws IOException {
-		ArrayList<String> couchesListes = new ArrayList<String>();
-		String couches = this.initCouches();
-		int debut = 0;
-		int fin = 0;
-		while ((fin = couches.indexOf('#', 1)) != -1) {
-			debut = couches.indexOf("#");
-			couchesListes.add(couches.substring(debut, fin));
-			couches = couches.substring(fin);
-		}
-		couchesListes.add(couches.substring(debut));
-		return couchesListes;
-	}
+	/*
+	 * public ArrayList<String> initCouchesList() throws IOException {
+	 * ArrayList<String> couchesListes = new ArrayList<String>(); String couches
+	 * = this.initCouches(); int debut = 0; int fin = 0; while ((fin =
+	 * couches.indexOf('#', 1)) != -1) { debut = couches.indexOf("#");
+	 * couchesListes.add(couches.substring(debut, fin)); couches =
+	 * couches.substring(fin); } couchesListes.add(couches.substring(debut));
+	 * return couchesListes; }
+	 */
 
 	/**
 	 * 
@@ -176,14 +197,25 @@ public class AnalyzeStacktrace {
 	 * @throws IOException
 	 *             retourne une exception si le fichier est vide.
 	 */
-	private String initCouches() throws IOException {
+	public ArrayList<String> initCouches() throws IOException {
+		ArrayList<String> couches = new ArrayList<String>();
 		String line = "";
 		String actuel = "";
 		while ((actuel = this.buffered.readLine()) != null) {
 			// On récupére chaque ligne du fichier
-			line = line + actuel + "\n";
+			if (actuel.trim().startsWith("#")) {
+				if (!line.equals("")) {
+					couches.add(line);
+				}
+				line = actuel + "\n";
+			} else {
+				line = line + actuel + "\n";
+			}
 		}
-		return line;
+		if (line != null) {
+			couches.add(line);
+		}
+		return couches;
 	}
 
 	public Couche buildCouche(String coucheString) {

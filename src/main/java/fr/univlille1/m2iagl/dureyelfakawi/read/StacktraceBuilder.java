@@ -8,28 +8,28 @@ import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 
 public class StacktraceBuilder {
-	
+
 	private AnalyzeStacktrace analyzeStacktrace;
-	
-	public StacktraceBuilder(AnalyzeStacktrace analyzeStacktrace){
+
+	public StacktraceBuilder(AnalyzeStacktrace analyzeStacktrace) {
 		this.analyzeStacktrace = analyzeStacktrace;
 	}
-	
-	public Stacktrace build() throws IOException{
-		
-		ArrayList<String> couchesString = analyzeStacktrace.initCouchesList();
-		
+
+	public Stacktrace build() throws IOException {
+
+		ArrayList<String> couchesString = analyzeStacktrace.initCouches();
+
 		Stacktrace stacktrace = Factory.createEmptyStacktrace();
-		
-		for(String coucheString : couchesString){
-			
+
+		for (String coucheString : couchesString) {
+
 			Couche couche = analyzeStacktrace.buildCouche(coucheString);
-			
+
 			int numCouche = analyzeStacktrace.getNumCouche(coucheString);
-			
+
 			stacktrace.put(numCouche, couche);
 		}
-		
+
 		return stacktrace;
 	}
 

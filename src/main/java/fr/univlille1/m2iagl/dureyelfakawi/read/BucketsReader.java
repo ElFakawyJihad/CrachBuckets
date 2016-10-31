@@ -26,12 +26,14 @@ public class BucketsReader {
 		File file = new File(Constantes.LOCATION_BUCKETS);
 		buckets = file.listFiles();
 		nbFolders = buckets.length;
+		position=-1;
+	}
+	public String getName(){
+		return this.buckets[position].getName();
 	}
 	
-	
-	
 	public boolean hasNextFolder(){
-		return position < nbFolders;
+		return position < nbFolders-1;
 	}
 
 	/**
@@ -41,18 +43,8 @@ public class BucketsReader {
 	 *             si les buckets ont tous été traités.
 	 */
 	public File nextFolder() throws EndBucketsException {
-		// Si on à pas encore ouvert l'ensemble des dossiers contenant les
-		// Buckets.
-		if (buckets == null) {
-			openFolder();
-			position = 0;
-			return buckets[position];
-		}
-		// Si il reste encore des Buckets.
 		position++;
 		if (position < nbFolders) {
-			
-			System.out.println("Bucket file : " + buckets[position]);
 			return buckets[position];
 		}
 		// Alors les fichiers sont terminers.
@@ -77,7 +69,7 @@ public class BucketsReader {
 		stactrace.nextFile();
 		stactrace.nextFile();
 		AnalyzeStacktrace analyze = new AnalyzeStacktrace(stactrace.nextFile());
-		System.out.println(analyze.getLibFrom(analyze.initCouchesList().get(7)));
+		System.out.println(analyze.getLibFrom(analyze.initCouches().get(7)));
 		System.out.println(reader.nextFolder().getName());
 	}
 }

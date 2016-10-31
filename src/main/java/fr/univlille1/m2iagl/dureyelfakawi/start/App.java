@@ -27,15 +27,15 @@ public class App
 		
 		BucketsReader bucketsReader = new BucketsReader();
 		bucketsReader.openFolder();
-
+		int nbBucketsTraiter=0;
 		while(bucketsReader.hasNextFolder()){
-			
 			BucketBuilder bucketBuilder = new BucketBuilder(bucketsReader.nextFolder());
-		
+			System.out.println("Bucket file : " + bucketsReader.getName());
 			Bucket bucket = bucketBuilder.build();
-			
-			
-			
+			System.out.println("Fin du traitement de la buckets :"+bucketsReader.getName());
+			nbBucketsTraiter++;
 		}
+		System.out.println("Fin du programme, le nombre de buckets traiter est de:"+nbBucketsTraiter);
+		
 	}
 }

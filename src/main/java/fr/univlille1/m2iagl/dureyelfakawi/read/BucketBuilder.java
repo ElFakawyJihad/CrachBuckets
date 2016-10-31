@@ -20,17 +20,12 @@ public class BucketBuilder {
 	}
 	
 	public Bucket build() throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException{
-
-		String[] bucketPath = bucketFolder.toString().split("/");
-		
-		int bucketNb = Integer.parseInt(bucketPath[bucketPath.length-1]);
-		
-		Bucket bucket = Factory.createEmptyBucket(bucketNb);
 		StacktracesReader stacktracesReader = new StacktracesReader(bucketFolder);
+		int bucketNb = Integer.parseInt(stacktracesReader.getName());		
+		Bucket bucket = Factory.createEmptyBucket(bucketNb);
 
 		while(stacktracesReader.hasNextFile()){
 			File stacktraceFile = stacktracesReader.nextFile();
-
 			StacktraceBuilder stacktraceBuilder = new StacktraceBuilder(new AnalyzeStacktrace(stacktraceFile));
 
 			Stacktrace stacktrace = stacktraceBuilder.build();
