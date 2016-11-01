@@ -6,14 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.univlille1.m2iagl.dureyelfakawi.action.Factory;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.FilePath;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Parameter;
-import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 
 /**
  * 
@@ -24,6 +22,7 @@ public class AnalyzeStacktrace {
 	private BufferedReader buffered;
 	// Ligne du probléme
 	private int ligneFrom;
+	private int ligneAt;
 
 	/**
 	 * 
@@ -35,22 +34,36 @@ public class AnalyzeStacktrace {
 	public AnalyzeStacktrace(File stacktrace) throws FileNotFoundException {
 		FileReader reader = new FileReader(stacktrace);
 		buffered = new BufferedReader(reader);
+		ligneFrom=-1;
+		ligneAt=-1;
 	}
 
 	public AnalyzeStacktrace() {
+		ligneFrom=-1;
+		ligneAt=-1;
 	}
 
 	// TODO Recupéré Ligne et Lib
 	public FilePath getPath(String line) {
 		int index;
-		if ((index = line.indexOf("at")) != -1) {
-			int terminer = line.indexOf(".c");
+		String name = null;
+		ArrayList<Parameter> parameters=new ArrayList<Parameter>();
+		if ((index = line.indexOf(" at ")) != -1) {
+			String restePath=line.substring(index+4);
+			int terminer = restePath.indexOf(".c");
 			if (terminer != -1) {
-				line.substring(index, terminer + 2);
+				name=restePath.substring(0, terminer + 2);
+				String reste=restePath.substring(terminer+2);
+				if ((index=reste.indexOf(":"))!=-1){
+					this.ligneAt=recupLigne(reste.substring(index+1));
+				}
+				if ((index=reste.indexOf(" "))!=-1){
+					getParametersPath(reste.substring(index));
+				}
 
 			}
 		}
-		return null;
+		return new FilePath(name, parameters);
 	}
 
 	ArrayList<Parameter> getParametersPath(String parameters) {
@@ -58,7 +71,7 @@ public class AnalyzeStacktrace {
 		if (parameters.contains(Constantes.NOLOCALS)) {
 			return parametersList;
 		}
-		String[] differentsParam = parameters.split("/n");
+		String[] differentsParam = parameters.split("\n");
 		int length = differentsParam.length;
 		for (int i = 0; i < length; i++) {
 			String[] s = differentsParam[i].split("=");
@@ -111,11 +124,18 @@ public class AnalyzeStacktrace {
 	/**
 	 * @param line
 	 *            la couche concernée
-	 * @return renvoie la ligne pour un from
+	 * @return renvoie la ligne pour un from ou un At
 	 */
 	public int getLigne(String line) {
 		getLibFrom(line);
-		return this.ligneFrom;
+		getPath(line);
+		if (this.ligneFrom!=-1){
+			return this.ligneFrom;
+		}
+		if (this.ligneAt!=-1){
+			return this.ligneAt;
+		}
+		return -1;
 	}
 
 	/***
@@ -177,22 +197,6 @@ public class AnalyzeStacktrace {
 
 	/**
 	 * 
-	 * @return l'ensemble des couches concernée
-	 * @throws IOException
-	 *             retourne une exception si le fichier est vide.
-	 */
-	/*
-	 * public ArrayList<String> initCouchesList() throws IOException {
-	 * ArrayList<String> couchesListes = new ArrayList<String>(); String couches
-	 * = this.initCouches(); int debut = 0; int fin = 0; while ((fin =
-	 * couches.indexOf('#', 1)) != -1) { debut = couches.indexOf("#");
-	 * couchesListes.add(couches.substring(debut, fin)); couches =
-	 * couches.substring(fin); } couchesListes.add(couches.substring(debut));
-	 * return couchesListes; }
-	 */
-
-	/**
-	 * 
 	 * @return on récupére l'ensemble des lignes de la stacktrace
 	 * @throws IOException
 	 *             retourne une exception si le fichier est vide.
@@ -228,8 +232,8 @@ public class AnalyzeStacktrace {
 
 		String lib = getLibFrom(coucheString);
 
-		// rajouter le filepath
-		FilePath filePath = null;
+		
+		FilePath filePath = getPath(coucheString);
 
 		return Factory.createCouche(filePath, lib, method, numCouche, line);
 
@@ -237,7 +241,7 @@ public class AnalyzeStacktrace {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println(new AnalyzeStacktrace()
-				.getNumCouche("#0  0xb732c2eb in g_hash_table_foreach_remove_or_steal (hash_table=0x80fed80,"));
+				.getPath("#3  0x0613b648 in *__GI___assert_fail (assertion=0x1c5b65 \"ret != inval_id\",file=0x1c5b29 \"../../src/xcb_io.c\", line=378, function=0x1c5ce4 \"_XAllocID\") at assert.c:81 buf = 0x8e6f6d0 \"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n"));
 	}
 
 }
