@@ -12,5 +12,9 @@ public class FilePath {
 		this.name = name;
 		this.parameters = parameters;
 	}
+	
+	public String getName(){
+		return name;
+	}
 
 }

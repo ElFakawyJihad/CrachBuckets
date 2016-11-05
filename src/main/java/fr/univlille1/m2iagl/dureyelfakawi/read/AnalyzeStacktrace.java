@@ -23,6 +23,7 @@ public class AnalyzeStacktrace {
 	// Ligne du probléme
 	private int ligneFrom;
 	private int ligneAt;
+	private String stacktraceNumber;
 
 	/**
 	 * 
@@ -32,10 +33,17 @@ public class AnalyzeStacktrace {
 	 *             renvoie une erreur si le fichier n'existe pas
 	 */
 	public AnalyzeStacktrace(File stacktrace) throws FileNotFoundException {
+		
 		FileReader reader = new FileReader(stacktrace);
 		buffered = new BufferedReader(reader);
 		ligneFrom=-1;
 		ligneAt=-1;
+		
+		String[] parts = stacktrace.getAbsolutePath().split("/");
+		System.out.println(stacktrace.getAbsolutePath().toString());
+		
+		stacktraceNumber = parts[parts.length-1].split("\\.")[0];
+
 	}
 
 	public AnalyzeStacktrace() {
@@ -43,7 +51,10 @@ public class AnalyzeStacktrace {
 		ligneAt=-1;
 	}
 
-	// TODO Recupéré Ligne et Lib
+	public String getStacktraceName(){
+		return stacktraceNumber;
+	}
+
 	public FilePath getPath(String line) {
 		int index;
 		String name = null;
@@ -63,6 +74,10 @@ public class AnalyzeStacktrace {
 
 			}
 		}
+		
+		if(name == null)
+			return null;
+		
 		return new FilePath(name, parameters);
 	}
 
@@ -166,13 +181,21 @@ public class AnalyzeStacktrace {
 			// On recupere le nom de la methode
 			String nameMethod = line.substring(index + 4);
 			int finMethod = nameMethod.indexOf('(');
-			String nameMethodWithoutParam = nameMethod.substring(0, finMethod);
-			// --------------------------------------------------
-			// On récupére les Paramètres------------------------
-			int finParam = nameMethod.indexOf(')');
-			String params = nameMethod.substring(finMethod + 1, finParam);
-			ArrayList<Parameter> parametres = getParametres(params);
-			return new Method(nameMethodWithoutParam, parametres);
+			String nameMethodWithoutParam = null;
+			ArrayList<Parameter> parameters = null;
+
+			if(finMethod == -1){
+				nameMethodWithoutParam = nameMethod.substring(0);
+				parameters = new ArrayList<>();
+			} else {
+				nameMethodWithoutParam = nameMethod.substring(0, finMethod);
+				// --------------------------------------------------
+				// On récupére les Paramètres------------------------
+				int finParam = nameMethod.indexOf(')');
+				String params = nameMethod.substring(finMethod + 1, finParam);
+				ArrayList<Parameter> parametres = getParametres(params);
+			}
+			return new Method(nameMethodWithoutParam, parameters);
 		}
 		return null;
 	}
@@ -232,7 +255,7 @@ public class AnalyzeStacktrace {
 
 		String lib = getLibFrom(coucheString);
 
-		
+
 		FilePath filePath = getPath(coucheString);
 
 		return Factory.createCouche(filePath, lib, method, numCouche, line);
@@ -241,7 +264,7 @@ public class AnalyzeStacktrace {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println(new AnalyzeStacktrace()
-				.getPath("#3  0x0613b648 in *__GI___assert_fail (assertion=0x1c5b65 \"ret != inval_id\",file=0x1c5b29 \"../../src/xcb_io.c\", line=378, function=0x1c5ce4 \"_XAllocID\") at assert.c:81 buf = 0x8e6f6d0 \"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n"));
+		.getPath("#3  0x0613b648 in *__GI___assert_fail (assertion=0x1c5b65 \"ret != inval_id\",file=0x1c5b29 \"../../src/xcb_io.c\", line=378, function=0x1c5ce4 \"_XAllocID\") at assert.c:81 buf = 0x8e6f6d0 \"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n"));
 	}
 
 }

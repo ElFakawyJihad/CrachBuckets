@@ -6,13 +6,13 @@ import java.util.Set;
 
 public class ValuesDecided {
 
-	private Map<Integer, Integer> map;
+	private Map<Integer, String> map;
 
 	public ValuesDecided(){
 		this.map = new HashMap<>();
 	}
 	
-	public void put(int key, int bucketKey){
+	public void put(int key, String bucketKey){
 		map.put(key, bucketKey);
 	}
 	
@@ -20,7 +20,7 @@ public class ValuesDecided {
 		return map.keySet();
 	}
 	
-	public int get(int key){
+	public String get(int key){
 		return map.get(key);
 	}
 }

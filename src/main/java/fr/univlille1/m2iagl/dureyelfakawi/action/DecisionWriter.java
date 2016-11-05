@@ -15,11 +15,13 @@ public class DecisionWriter {
 	
 	public void writeValuesDecided(ValuesDecided valuesDecided){
 		for(Integer key : valuesDecided.keySet()){
-			int valueDecided = valuesDecided.get(key);
+			String valueDecided = valuesDecided.get(key);
 			
-			String string = key + " -> " + valueDecided + "\n";
+			String string = key + "  -> " + valueDecided + "\n";
 			
 			printWriter.write(string);
+			printWriter.flush();
+			
 		}
 	}
 }
