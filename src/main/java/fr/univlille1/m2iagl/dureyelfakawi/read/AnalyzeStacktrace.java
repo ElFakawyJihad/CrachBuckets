@@ -186,7 +186,7 @@ public class AnalyzeStacktrace {
 
 			if(finMethod == -1){
 				nameMethodWithoutParam = nameMethod.substring(0);
-				parameters = new ArrayList<>();
+				parameters = new ArrayList<Parameter>();
 			} else {
 				nameMethodWithoutParam = nameMethod.substring(0, finMethod);
 				// --------------------------------------------------

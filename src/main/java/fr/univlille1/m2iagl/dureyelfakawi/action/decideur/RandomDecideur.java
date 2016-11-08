@@ -18,15 +18,19 @@ public class RandomDecideur extends Decideur{
 	@Override
 	public ValuesDecided decide(Map<Integer, Stacktrace> toBeAttributed) {
 		
-		Random random = new Random();
-		
-		List<String> bucketsKey = new ArrayList<>(buckets.keySet());
-		
 		for(int stacktraceKey : toBeAttributed.keySet()){
-			valuesDecided.put(stacktraceKey, bucketsKey.get(random.nextInt(bucketsKey.size())));
+			valuesDecided.put(stacktraceKey, decideStacktrace(toBeAttributed.get(stacktraceKey)));
 		}
 		
 		return valuesDecided;
 	}
 
+	@Override
+	public String decideStacktrace(Stacktrace stacktrace) {
+		
+		Random random = new Random();
+		List<String> bucketsKey = new ArrayList<String>(buckets.keySet());
+		
+		return bucketsKey.get(random.nextInt(bucketsKey.size()));
+	}
 }

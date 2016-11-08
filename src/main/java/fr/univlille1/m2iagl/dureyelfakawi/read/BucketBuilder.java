@@ -21,7 +21,7 @@ public class BucketBuilder {
 	
 	public Bucket build() throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException{
 		StacktracesReader stacktracesReader = new StacktracesReader(bucketFolder);
-		int bucketNb = Integer.parseInt(stacktracesReader.getName());		
+		int bucketNb = Integer.parseInt(stacktracesReader.getName());
 		Bucket bucket = Factory.createEmptyBucket(bucketNb);
 
 		while(stacktracesReader.hasNextFile()){

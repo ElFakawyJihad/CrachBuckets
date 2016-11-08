@@ -1,0 +1,139 @@
+% Un document standard de type article
+% 
+% Rédigé pour les étudiants de sciences de la Terre de l'Université de Lyon par
+% Laurent Pouilloux, Yanick Ricard, Stéphane Labrosse, Frédéric Chambat
+%
+% Licence Creative Commons
+% Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) 
+%
+\documentclass[10pt]{article}
+%% PACKAGES
+% Regles typographiques francaises
+\usepackage[french]{babel}
+% Utilisation des accents et d'un encodage standard (UTF8)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% Chargement d'une police
+\usepackage[scaled]{helvet}
+\renewcommand*\familydefault{\sfdefault}
+% Dimensions de la page
+\usepackage{a4wide}
+% Creation des liens hypertextes dans le document
+\usepackage[colorlinks=true]{hyperref}
+% Definition des entetes de pages
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+% Utilisation d'images
+\usepackage{graphicx}
+% Utilisation de tableaux evolues
+\usepackage{tabularx}
+% Commandes pour les URL et email
+\usepackage{url}
+% Pour faire des exemples d'utilisation de commandes LaTeX
+\usepackage{example}
+% Gestion avancee de la bibliographie
+\usepackage[]{natbib}
+% Les couleurs
+\usepackage{color}
+% Les algorithmes
+\usepackage{algpseudocode}
+
+%% COMMANDES
+% Profondeur de la table des matieres
+\setcounter{tocdepth}{2}
+% Agrandissement de la zone reservee aux entetes
+\addtolength{\headheight}{1.5pt}
+% Definitions de commandes pour mettre en couleur
+%
+\fancyfoot[RO, LE]{Antonin DUREY et Jihad EL FAKAWI} 
+\fancyfoot[LO, RE]{Outils pour la Programmation des Logiciels} 
+
+
+\begin{document}
+
+% Informations concernant le document
+\title{Ceci est un titre de document}
+\author{Antonin DUREY, Jihad EL FAKAWI}
+\date{Novembre 2016}
+% Page de titre automatique
+\maketitle
+% Resume du document
+
+\newpage
+
+% Generation de la table des mati\`eres
+\tableofcontents
+
+\newpage
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+\paragraph{}
+De nos jours, les crashs de logiciels ou de programmes sont quotidiens et les grosses applications doivent faire face à des milliers de rapport de crashs. L’envoi de ces rapports aux développeurs est néanmoins essentiel pour permettre à ceux-ci de corriger les problèmes et failles. Pour simplifier l’analyse de ces rapports, ils sont triés par bucket. Un bucket rassemble ainsi une série de rapports dont la source du problème est très certainement la même. Grâce à cela, lorsque les développeurs analyserons les rapports contenus dans chacun des bucket, ils disposeront d’une grande quantité d’information pour corriger le problème.
+
+
+\paragraph{}
+Dans le cadre du module OPL de notre Master 2 IAGL, nous avons été amenés à réaliser un projet qui porte sur l’analyse de crash. Sur ce projet, nous avons implémenté le tri de rapports d’erreurs dans des buckets.
+    
+    
+\paragraph{}
+Pour trier ces rapports, nous avons implémenté plusieurs algorithmes. Dans un premier temps, nous les avons triés de manière aléatoire. Dans un second temps, nous avons attribué un certain nombre de points aux buckets en fonction des points communs entre le rapport à trier et les rapports contenus dans le bucket. Le bucket choisi est alors celui dont le score est le plus élevé. Le troisième algorithme est une variante du second, il calcule la moyenne des points par nombre de lignes d’erreurs et par nombre de rapports dans un bucket.
+
+
+\paragraph{}
+L’évaluation de nos résultats a été facilité par l’infrastructure mise en place. En effet, nous pouvions soumettre nos résultat, c’est-à-dire l’attribution des rapports d’erreurs à un bucket précis. Grâce à cela, nous avons constaté que notre troisième et dernier algorithme est plus performant que le second, lui même plus performant que le premier. Néanmoins, ces 2 dernières solutions présentent l’inconvénient de prendre un temps conséquent lors du tri - plusieurs dizaines de secondes avec les données fournies.
+
+\paragraph{}
+Ce rapport présente ces travaux en 3 parties. La première est consacré au travail technique qui a été effectué. La seconde se concentre sur l'évaluation des résultats et des algorithmes. Enfin, la troisième et dernière partie traite des améliorations et des évolutions possibles du projet.
+
+\newpage
+
+\section{Travail technique}
+
+\subsection{But}
+
+
+\subsection{Overview}
+
+
+\subsection{Algorithmes}
+
+\begin{algorithmic}[]
+\If {$i\geq maxval$}
+    \State $i\gets 0$
+\Else
+    \If {$i+k\leq maxval$}
+        \State $i\gets i+k$
+    \EndIf
+\EndIf
+\end{algorithmic}
+
+\subsection{Architecture}
+
+\subsection{Implémentation}
+
+\subsection{Utilisation}
+
+\section{Évaluation}
+
+\subsection{Efficacité}
+
+\subsection{Complexité}
+
+\subsection{Performance}
+334/1248
+
+\section{Améliorations}
+
+\subsection{Solutions existantes}
+
+\subsection{Idées d'algorithmes}
+
+
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+
+
+
+\end{document}

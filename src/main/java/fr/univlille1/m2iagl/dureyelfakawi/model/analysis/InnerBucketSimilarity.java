@@ -19,10 +19,9 @@ public class InnerBucketSimilarity {
 	
 	public InnerBucketSimilarity(Bucket bucket){
 		this.bucket = bucket;
-		similarities = new HashMap<>();
+		similarities = new HashMap<String, Integer>();
 		fillSimilaritiesKey();
 	}
-	
 	
 	public void computeSimilar(){
 		for(Integer stacktraceKey : bucket.keySet()){

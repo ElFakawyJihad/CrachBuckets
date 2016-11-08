@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.univlille1.m2iagl.dureyelfakawi.action.DecisionWriter;
-import fr.univlille1.m2iagl.dureyelfakawi.action.Helper;
 import fr.univlille1.m2iagl.dureyelfakawi.action.decideur.Decideur;
-import fr.univlille1.m2iagl.dureyelfakawi.action.decideur.RandomDecideur;
 import fr.univlille1.m2iagl.dureyelfakawi.action.decideur.SumPointsDecideur;
 import fr.univlille1.m2iagl.dureyelfakawi.model.analysis.ValuesDecided;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Bucket;
@@ -38,7 +36,7 @@ public class App
 		BucketsReader bucketsReader = new BucketsReader();
 		bucketsReader.openFolder(Constantes.LOCATION_BUCKETS);
 		
-		Map<String, Bucket> buckets = new HashMap<>();
+		Map<String, Bucket> buckets = new HashMap<String, Bucket>();
 		while(bucketsReader.hasNextFolder()){
 			BucketBuilder bucketBuilder = new BucketBuilder(bucketsReader.nextFolder());
 			buckets.put(bucketsReader.getName(), bucketBuilder.build());

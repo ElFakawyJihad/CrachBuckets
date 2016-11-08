@@ -30,7 +30,7 @@ public class SumPointsDecideur extends Decideur {
 		return valuesDecided;
 	}
 
-	private String decideStacktrace(Stacktrace stacktrace){
+	public String decideStacktrace(Stacktrace stacktrace){
 
 		Map<String, Double> values = new HashMap<String, Double>();
 
@@ -50,7 +50,7 @@ public class SumPointsDecideur extends Decideur {
 			points += getPointsBetweenTwoStacktraces(stacktraceFromBucket, toBeAttributed);
 		}
 
-		return points/bucket.keySet().size();
+		return points/(bucket.keySet().size()+1);
 	}
 
 	private double getPointsBetweenTwoStacktraces(Stacktrace stacktraceFromBucket, Stacktrace stacktraceToBeAttributed){

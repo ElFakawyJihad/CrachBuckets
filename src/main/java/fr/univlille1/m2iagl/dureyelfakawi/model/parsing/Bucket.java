@@ -13,11 +13,11 @@ public class Bucket {
 	private Map<Integer, Stacktrace> stacktraces;
 	
 	public Bucket(){
-		this.stacktraces = new HashMap<>();
+		this.stacktraces = new HashMap<Integer, Stacktrace>();
 	}
 	
 	public Bucket(int bucketNb){
-		this.stacktraces = new HashMap<>();
+		this.stacktraces = new HashMap<Integer, Stacktrace>();
 		setBucketNb(bucketNb);
 	}
 	
@@ -28,6 +28,10 @@ public class Bucket {
 	public void addStacktrace(Stacktrace stacktrace){
 		this.stacktraces.put(stacktraceNb++, stacktrace);
 		
+	}
+	
+	public Stacktrace remove(int i){
+		return stacktraces.remove(i);
 	}
 	
 	public void putStacktrace(int i, Stacktrace stacktrace){

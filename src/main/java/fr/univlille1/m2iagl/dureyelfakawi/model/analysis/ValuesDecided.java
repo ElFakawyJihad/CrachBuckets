@@ -9,7 +9,7 @@ public class ValuesDecided {
 	private Map<Integer, String> map;
 
 	public ValuesDecided(){
-		this.map = new HashMap<>();
+		this.map = new HashMap<Integer, String>();
 	}
 	
 	public void put(int key, String bucketKey){
