@@ -9,7 +9,7 @@ public class Stacktrace {
 	private Map<Integer, Couche> couches;
 	
 	public Stacktrace(){
-		this.couches = new HashMap<>();
+		this.couches = new HashMap<Integer,Couche>();
 	}
 	
 	public void put(int num, Couche couche){

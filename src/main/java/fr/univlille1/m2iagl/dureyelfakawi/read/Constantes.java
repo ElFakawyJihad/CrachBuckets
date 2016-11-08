@@ -7,7 +7,7 @@ public class Constantes {
 
 	public static final String LOCATION_BUCKETS = "nautilus-training";
 	public static final String LOCATION_STACKTRACE_TO_ATTRIBUTE = "nautilus-testing";
-	public static final String STACKTRACE_FILENAME ="Stracktrace.txt";
+	public static final String STACKTRACE_FILENAME ="Stacktrace.txt";
 	
 	//-------------------------------------------------------------
 	public static final String NOLOCALS="No locals";

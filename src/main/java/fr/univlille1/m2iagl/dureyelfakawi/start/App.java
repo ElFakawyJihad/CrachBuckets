@@ -23,6 +23,7 @@ import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndBucketsException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndElementsInBucketsException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.LengthFileInFolderException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NoStackTraceFileException;
+import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NonExistantFolder;
 
 /**
  * Hello world!
@@ -30,12 +31,12 @@ import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NoStackTraceFileExcepti
  */
 public class App 
 {
-	public static void main(String[] args) throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException
+	public static void main(String[] args) throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException, NonExistantFolder
 	{
 		
 		/* Création des buckets */
 		BucketsReader bucketsReader = new BucketsReader();
-		bucketsReader.openFolder();
+		bucketsReader.openFolder(Constantes.LOCATION_BUCKETS);
 		
 		Map<String, Bucket> buckets = new HashMap<>();
 		while(bucketsReader.hasNextFolder()){

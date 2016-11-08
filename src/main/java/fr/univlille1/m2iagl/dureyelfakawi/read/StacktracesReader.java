@@ -64,13 +64,15 @@ public class StacktracesReader {
 	 * @throws NoStackTraceFileException
 	 *             pas de fichier "stacktrace.txt" dans le dossier
 	 */
-	private File getStacktrace(File file) throws LengthFileInFolderException, NoStackTraceFileException {
+	public File getStacktrace(File file) throws LengthFileInFolderException, NoStackTraceFileException {
 		File[] folderStacktrace = file.listFiles();
 		if (folderStacktrace.length != 1) {
 			throw new LengthFileInFolderException();
 		}
 		File stacktrace = folderStacktrace[0];
-		if (stacktrace.getName().equals(Constantes.STACKTRACE_FILENAME)) {
+		if (!stacktrace.getName().equals(Constantes.STACKTRACE_FILENAME)) {
+			stacktrace.delete();
+			file.delete();
 			throw new NoStackTraceFileException();
 		}
 		return stacktrace;

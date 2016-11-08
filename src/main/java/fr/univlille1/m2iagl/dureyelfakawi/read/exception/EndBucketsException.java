@@ -4,7 +4,5 @@
 package fr.univlille1.m2iagl.dureyelfakawi.read.exception;
 
 public class EndBucketsException extends Exception {
-	public EndBucketsException(){
-		System.out.println("Il n'y a plus de buckets disponibles");
-	}
+
 }

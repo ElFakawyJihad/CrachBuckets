@@ -3,16 +3,14 @@
  */
 package fr.univlille1.m2iagl.dureyelfakawi.read;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndBucketsException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.EndElementsInBucketsException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.LengthFileInFolderException;
 import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NoStackTraceFileException;
+import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NonExistantFolder;
 
 public class BucketsReader {
 	private File[] buckets;
@@ -22,18 +20,22 @@ public class BucketsReader {
 	/**
 	 * Fonction qui ouvre le dossier contenant les Buckets.
 	 */
-	public void openFolder() {
-		File file = new File(Constantes.LOCATION_BUCKETS);
+	public void openFolder(String path) throws NonExistantFolder {
+		File file = new File(path);
+		if (!file.exists()) {
+			throw new NonExistantFolder();
+		}
 		buckets = file.listFiles();
 		nbFolders = buckets.length;
-		position=-1;
+		position = -1;
 	}
-	public String getName(){
+
+	public String getName() {
 		return this.buckets[position].getName();
 	}
-	
-	public boolean hasNextFolder(){
-		return position < nbFolders-1;
+
+	public boolean hasNextFolder() {
+		return position < nbFolders - 1;
 	}
 
 	/**
@@ -61,8 +63,8 @@ public class BucketsReader {
 	 * @throws EndElementsInBucketsException
 	 * @throws IOException
 	 */
-	public static void main(String[] args)
-			throws EndBucketsException, LengthFileInFolderException, NoStackTraceFileException, EndElementsInBucketsException, IOException {
+	public static void main(String[] args) throws EndBucketsException, LengthFileInFolderException,
+			NoStackTraceFileException, EndElementsInBucketsException, IOException {
 		BucketsReader reader = new BucketsReader();
 		File buckets = reader.nextFolder();
 		StacktracesReader stactrace = new StacktracesReader(buckets);
@@ -71,5 +73,21 @@ public class BucketsReader {
 		AnalyzeStacktrace analyze = new AnalyzeStacktrace(stactrace.nextFile());
 		System.out.println(analyze.getLibFrom(analyze.initCouches().get(7)));
 		System.out.println(reader.nextFolder().getName());
+	}
+
+	public int getNbFolders() {
+		return nbFolders;
+	}
+
+	public void setNbFolders(int nbFolders) {
+		this.nbFolders = nbFolders;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 }
