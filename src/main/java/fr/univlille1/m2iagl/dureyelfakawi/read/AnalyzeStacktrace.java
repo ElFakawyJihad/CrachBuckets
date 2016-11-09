@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import fr.univlille1.m2iagl.dureyelfakawi.action.Factory;
+import fr.univlille1.m2iagl.dureyelfakawi.action.Helper;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.FilePath;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
@@ -39,11 +40,21 @@ public class AnalyzeStacktrace {
 		ligneFrom=-1;
 		ligneAt=-1;
 		
-		String[] parts = stacktrace.getAbsolutePath().split("/");
-		System.out.println(stacktrace.getAbsolutePath().toString());
+		findNumber(stacktrace);
+	}
+	
+	private void findNumber(File stacktrace){
+		String os = System.getProperty("os.name").toLowerCase();
+		String split = "";
+		
+		if(os.startsWith("win"))
+			split = "\\\\";
+		else
+			split = "/";
+		
+		String[] parts = stacktrace.getAbsolutePath().split(split);
 		
 		stacktraceNumber = parts[parts.length-1].split("\\.")[0];
-
 	}
 
 	public AnalyzeStacktrace() {
@@ -128,7 +139,7 @@ public class AnalyzeStacktrace {
 				} else {
 					ligneFrom = -1;
 				}
-				return fromLib.substring(0, fin + 2);
+				return Helper.removeVersionNumber(fromLib.substring(0, fin + 2));
 			} else {
 				return null;
 			}
@@ -261,10 +272,4 @@ public class AnalyzeStacktrace {
 		return Factory.createCouche(filePath, lib, method, numCouche, line);
 
 	}
-
-	public static void main(String[] args) throws FileNotFoundException {
-		System.out.println(new AnalyzeStacktrace()
-		.getPath("#3  0x0613b648 in *__GI___assert_fail (assertion=0x1c5b65 \"ret != inval_id\",file=0x1c5b29 \"../../src/xcb_io.c\", line=378, function=0x1c5ce4 \"_XAllocID\") at assert.c:81 buf = 0x8e6f6d0 \"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n"));
-	}
-
 }

@@ -10,10 +10,10 @@ import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Couche;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Method;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
 
-public class SumPointsDecideur extends Decideur {
+public class AveragePointsDecideur extends Decideur {
 
 
-	public SumPointsDecideur(Map<String, Bucket> buckets) {
+	public AveragePointsDecideur(Map<String, Bucket> buckets) {
 		super(buckets);
 	}
 
@@ -24,6 +24,7 @@ public class SumPointsDecideur extends Decideur {
 
 			String valueDecided = decideStacktrace(stacktrace);
 			valuesDecided.put(key, valueDecided);
+			//return valuesDecided;
 		}
 
 		return valuesDecided;
@@ -49,7 +50,7 @@ public class SumPointsDecideur extends Decideur {
 			points += getPointsBetweenTwoStacktraces(stacktraceFromBucket, toBeAttributed);
 		}
 
-		return points;
+		return points/(bucket.keySet().size()+1);
 	}
 
 	private double getPointsBetweenTwoStacktraces(Stacktrace stacktraceFromBucket, Stacktrace stacktraceToBeAttributed){
@@ -66,7 +67,7 @@ public class SumPointsDecideur extends Decideur {
 			}
 		}
 
-		return points;
+		return points/stacktraceFromBucket.keySet().size();
 	}
 
 	private double getPointsBetweenTwoCouches(Couche coucheFromBucket, Couche coucheToBeAttributed){
@@ -85,13 +86,13 @@ public class SumPointsDecideur extends Decideur {
 		String evalFromBucket, evalFromToBeAttributed;
 
 		if(libPathFromBucket != null &&
-				libPathFromToBeAttributed != null ){
-			evalFromBucket = Helper.removeVersionNumber(libPathFromBucket);
-			evalFromToBeAttributed = Helper.removeVersionNumber(libPathFromToBeAttributed);
+				libPathFromToBeAttributed != null){
+			evalFromBucket = libPathFromBucket;
+			evalFromToBeAttributed = libPathFromToBeAttributed;
 			
 		} else if(libPathFromBucket != null &&
 				coucheToBeAttributed.getFilePath() != null && coucheToBeAttributed.getFilePath().toString() != null){
-			evalFromBucket = Helper.removeVersionNumber(libPathFromBucket);
+			evalFromBucket = libPathFromBucket;
 			evalFromToBeAttributed = coucheToBeAttributed.getFilePath().toString();
 
 		} else if(coucheFromBucket.getFilePath() != null && coucheFromBucket.getFilePath().getName() != null &&
@@ -102,7 +103,7 @@ public class SumPointsDecideur extends Decideur {
 		} else if(coucheFromBucket.getFilePath() != null && coucheFromBucket.getFilePath().getName() != null &&
 				libPathFromToBeAttributed != null){
 			evalFromBucket = coucheFromBucket.getFilePath().getName();
-			evalFromToBeAttributed = Helper.removeVersionNumber(libPathFromToBeAttributed);
+			evalFromToBeAttributed = libPathFromToBeAttributed;
 
 		} else {
 			evalFromBucket = null;
