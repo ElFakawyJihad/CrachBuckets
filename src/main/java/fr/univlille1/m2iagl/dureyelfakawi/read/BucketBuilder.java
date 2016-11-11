@@ -26,11 +26,12 @@ public class BucketBuilder {
 
 		while(stacktracesReader.hasNextFile()){
 			File stacktraceFile = stacktracesReader.nextFile();
-			StacktraceBuilder stacktraceBuilder = new StacktraceBuilder(new AnalyzeStacktrace(stacktraceFile));
+			AnalyzeStacktrace analyzeStacktrace = new AnalyzeStacktrace(stacktraceFile);
+			StacktraceBuilder stacktraceBuilder = new StacktraceBuilder(analyzeStacktrace);
 
 			Stacktrace stacktrace = stacktraceBuilder.build();
 			
-			bucket.addStacktrace(stacktrace);
+			bucket.putStacktrace(analyzeStacktrace.getStacktraceName(), stacktrace);
 		}
 		
 		return bucket;

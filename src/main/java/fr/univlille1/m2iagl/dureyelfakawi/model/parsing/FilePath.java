@@ -16,5 +16,10 @@ public class FilePath {
 	public String getName(){
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		return "FilePath [name=" + name + ", parameters=" + parameters + "]";
+	}
 
 }

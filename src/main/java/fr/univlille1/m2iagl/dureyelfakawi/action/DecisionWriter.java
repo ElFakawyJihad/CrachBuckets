@@ -18,7 +18,7 @@ public class DecisionWriter {
 
 		for(Integer key : valuesDecided.keySet()){
 			String valueDecided = valuesDecided.get(key);
-			string = key + "  -> " + valueDecided + "\n";
+			string += key + "  -> " + valueDecided + "\n";
 		}
 
 		if(printWriter != null){

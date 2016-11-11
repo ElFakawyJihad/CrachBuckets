@@ -56,8 +56,28 @@ public class Helper {
 			}
 		}
 
-
 		return points;
+	}
+
+	public static String getFolderName(String path){
+
+		String split = "/";  
+
+		path = path.replace("/build/buildd/", "");
+		path = path.replace("/usr/lib/", "");
+
+		
+		return path.split(split)[0];
+	}
+
+	public static String getFilename(String libPath){
+
+		String split = "/";  
+
+		libPath = libPath.replace("/build/buildd/", "");
+		String[] splited = libPath.split(split);
+
+		return splited[splited.length-1].split("\\.")[0];
 	}
 
 	public static double getPointsFromCombinatedNameAndLineSimilitude(String name1, String name2, int line1, int line2){

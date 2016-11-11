@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import fr.univlille1.m2iagl.dureyelfakawi.action.Factory;
 import fr.univlille1.m2iagl.dureyelfakawi.action.Helper;
@@ -54,7 +55,7 @@ public class AnalyzeStacktrace {
 		
 		String[] parts = stacktrace.getAbsolutePath().split(split);
 		
-		stacktraceNumber = parts[parts.length-1].split("\\.")[0];
+		stacktraceNumber = parts[parts.length-2];
 	}
 
 	public AnalyzeStacktrace() {
@@ -89,7 +90,7 @@ public class AnalyzeStacktrace {
 		if(name == null)
 			return null;
 		
-		return new FilePath(name, parameters);
+		return new FilePath(Helper.removeVersionNumber(name), parameters);
 	}
 
 	ArrayList<Parameter> getParametersPath(String parameters) {

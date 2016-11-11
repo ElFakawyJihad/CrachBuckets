@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.univlille1.m2iagl.dureyelfakawi.action.DecisionWriter;
-import fr.univlille1.m2iagl.dureyelfakawi.action.decideur.AveragePointsDecideur;
 import fr.univlille1.m2iagl.dureyelfakawi.action.decideur.Decideur;
+import fr.univlille1.m2iagl.dureyelfakawi.action.decideur.LibFileAndFunctionsDecideur;
 import fr.univlille1.m2iagl.dureyelfakawi.model.analysis.ValuesDecided;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Bucket;
 import fr.univlille1.m2iagl.dureyelfakawi.model.parsing.Stacktrace;
@@ -56,7 +56,7 @@ public class App
 			stacktraces.put(Integer.valueOf(analyzeStacktrace.getStacktraceName()), stacktraceBuilder.build());
 		}
 		/* Fin de parse des Stacktrace à mettre dans les buckets et debut de l'analyse */
-		Decideur decideur = new AveragePointsDecideur(buckets);
+		Decideur decideur = new LibFileAndFunctionsDecideur(buckets);
 		ValuesDecided valuesDecided = decideur.decide(stacktraces);
 		
 		/* Fin de l'analyse et debut de l'ecriture sur fichier */

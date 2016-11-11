@@ -10,14 +10,14 @@ public class Bucket {
 	
 	private int bucketNb;
 	
-	private Map<Integer, Stacktrace> stacktraces;
+	private Map<String, Stacktrace> stacktraces;
 	
 	public Bucket(){
-		this.stacktraces = new HashMap<Integer, Stacktrace>();
+		this.stacktraces = new HashMap<String, Stacktrace>();
 	}
 	
 	public Bucket(int bucketNb){
-		this.stacktraces = new HashMap<Integer, Stacktrace>();
+		this();
 		setBucketNb(bucketNb);
 	}
 	
@@ -26,23 +26,23 @@ public class Bucket {
 	}
 	
 	public void addStacktrace(Stacktrace stacktrace){
-		this.stacktraces.put(stacktraceNb++, stacktrace);
+		this.stacktraces.put((stacktraceNb++) + "", stacktrace);
 		
 	}
 	
-	public Stacktrace remove(int i){
+	public Stacktrace remove(String i){
 		return stacktraces.remove(i);
 	}
 	
-	public void putStacktrace(int i, Stacktrace stacktrace){
-		this.stacktraces.put(i, stacktrace);
+	public void putStacktrace(String name, Stacktrace stacktrace){
+		this.stacktraces.put(name, stacktrace);
 	}
 	
-	public Set<Integer> keySet(){
+	public Set<String> keySet(){
 		return stacktraces.keySet();
 	}
 	
-	public Stacktrace get(int num){
+	public Stacktrace get(String num){
 		return stacktraces.get(num);
 	}
 
