@@ -20,18 +20,18 @@ import fr.univlille1.m2iagl.dureyelfakawi.read.exception.NonExistantFolder;
 
 public class AnalyzeStacktraceTest {
 	private static final String LINE = "#3  0x0613b648 in *__GI___assert_fail (assertion=0x1c5b65 \"ret != inval_id\",file=0x1c5b29 \"../../src/xcb_io.c\", line=378, function=0x1c5ce4 \"_XAllocID\") at assert.c:81 buf = 0x8e6f6d0 \"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n";
-
+	private static final String LINE2= "#6  0xb75510f3 in ?? () from /usr/lib/libglib-2.0.so.0";
 	@Test
 	public void testGetStacktraceName() throws NonExistantFolder, EndBucketsException, LengthFileInFolderException,
 			NoStackTraceFileException, EndElementsInBucketsException, FileNotFoundException {
 		String file = new File(Constantes.LOCATION_BUCKETS).listFiles()[0].listFiles()[0].listFiles()[0]
-				.getAbsolutePath();
+				.getName();
 		BucketsReader buckets = new BucketsReader();
 		buckets.openFolder(Constantes.LOCATION_BUCKETS);
 		StacktracesReader analyse = new StacktracesReader(buckets.nextFolder());
 		File f = analyse.nextFile();
 		AnalyzeStacktrace analyze = new AnalyzeStacktrace(f);
-		assertEquals(file, analyze.getStacktraceName() + ".txt");
+		assertEquals(file, analyze.getStacktraceName()+".txt");
 	}
 
 	@Test
@@ -55,12 +55,10 @@ public class AnalyzeStacktraceTest {
 
 	@Test
 	public void testGetLibFrom() {
-		String parms="\"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n";
-		ArrayList<Parameter> parameters=new ArrayList<Parameter>();
-		parameters.add(new Parameter("buf"));
-		FilePath path=new FilePath("assert.c",parameters);
-		ArrayList<Parameter> path2= new AnalyzeStacktrace().getParametersPath(parms);
+		String path=" /usr/lib/libglib-2.0.so";
+		String path2= new AnalyzeStacktrace().getLibFrom(LINE2);
 		assertEquals(path,path2);
+		assertEquals(0,new AnalyzeStacktrace().getLigne(LINE2));
 	}
 
 	@Test
