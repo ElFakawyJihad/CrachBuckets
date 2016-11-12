@@ -16,5 +16,12 @@ public class FilePath {
 	public String getName(){
 		return name;
 	}
+	public boolean equals(Object o){
+		if (o instanceof FilePath){
+			FilePath path=(FilePath) o;
+			return (this.name.equals(path.name) && this.parameters.equals(path.parameters));
+		}
+		return false;
+	}
 
 }

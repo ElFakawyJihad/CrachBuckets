@@ -25,6 +25,13 @@ public class Method {
 	public List<Parameter> getParameters() {
 		return parameters;
 	}
+	public boolean equals(Object o){
+		if (o instanceof Method){
+			Method method=(Method) o;
+			return this.name.equals(method.name) && this.parameters.equals(method.parameters);
+		}
+		return false;
+	}
 
 
 }

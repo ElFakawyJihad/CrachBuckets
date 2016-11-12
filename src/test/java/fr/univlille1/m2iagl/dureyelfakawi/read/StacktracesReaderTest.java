@@ -92,7 +92,6 @@ public class StacktracesReaderTest {
 			stacktraceFile.createNewFile();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		BucketsReader buckets = new BucketsReader();

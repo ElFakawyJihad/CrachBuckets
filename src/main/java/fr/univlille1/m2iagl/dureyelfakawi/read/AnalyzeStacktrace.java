@@ -40,7 +40,6 @@ public class AnalyzeStacktrace {
 		ligneAt=-1;
 		
 		String[] parts = stacktrace.getAbsolutePath().split("/");
-		System.out.println(stacktrace.getAbsolutePath().toString());
 		
 		stacktraceNumber = parts[parts.length-1].split("\\.")[0];
 
@@ -69,7 +68,7 @@ public class AnalyzeStacktrace {
 					this.ligneAt=recupLigne(reste.substring(index+1));
 				}
 				if ((index=reste.indexOf(" "))!=-1){
-					getParametersPath(reste.substring(index));
+					parameters=getParametersPath(reste.substring(index));
 				}
 
 			}
@@ -90,7 +89,7 @@ public class AnalyzeStacktrace {
 		int length = differentsParam.length;
 		for (int i = 0; i < length; i++) {
 			String[] s = differentsParam[i].split("=");
-			parametersList.add(new Parameter(s[0]));
+			parametersList.add(new Parameter(s[0].trim()));
 		}
 		return parametersList;
 	}
@@ -182,11 +181,10 @@ public class AnalyzeStacktrace {
 			String nameMethod = line.substring(index + 4);
 			int finMethod = nameMethod.indexOf('(');
 			String nameMethodWithoutParam = null;
-			ArrayList<Parameter> parameters = null;
+			ArrayList<Parameter> parameters =  new ArrayList<>();
 
 			if(finMethod == -1){
 				nameMethodWithoutParam = nameMethod.substring(0);
-				parameters = new ArrayList<>();
 			} else {
 				nameMethodWithoutParam = nameMethod.substring(0, finMethod);
 				// --------------------------------------------------
@@ -195,7 +193,7 @@ public class AnalyzeStacktrace {
 				String params = nameMethod.substring(finMethod + 1, finParam);
 				ArrayList<Parameter> parametres = getParametres(params);
 			}
-			return new Method(nameMethodWithoutParam, parameters);
+			return new Method(nameMethodWithoutParam.trim(), parameters);
 		}
 		return null;
 	}
