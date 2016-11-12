@@ -53,27 +53,7 @@ public class BucketsReader {
 		throw new EndBucketsException();
 	}
 
-	/**
-	 * Main de test
-	 * 
-	 * @param args
-	 * @throws EndBucketsException
-	 * @throws LengthFileInFolderException
-	 * @throws NoStackTraceFileException
-	 * @throws EndElementsInBucketsException
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws EndBucketsException, LengthFileInFolderException,
-			NoStackTraceFileException, EndElementsInBucketsException, IOException {
-		BucketsReader reader = new BucketsReader();
-		File buckets = reader.nextFolder();
-		StacktracesReader stactrace = new StacktracesReader(buckets);
-		stactrace.nextFile();
-		stactrace.nextFile();
-		AnalyzeStacktrace analyze = new AnalyzeStacktrace(stactrace.nextFile());
-		System.out.println(analyze.getLibFrom(analyze.initCouches().get(7)));
-		System.out.println(reader.nextFolder().getName());
-	}
+
 
 	public int getNbFolders() {
 		return nbFolders;

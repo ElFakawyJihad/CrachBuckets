@@ -273,9 +273,4 @@ public class AnalyzeStacktrace {
 
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
-		System.out.println(new AnalyzeStacktrace()
-		.getPath("#3  0x0613b648 in *__GI___assert_fail (assertion=0x1c5b65 \"ret != inval_id\",file=0x1c5b29 \"../../src/xcb_io.c\", line=378, function=0x1c5ce4 \"_XAllocID\") at assert.c:81 buf = 0x8e6f6d0 \"gnome-appearance-properties: ../../src/xcb_io.c:378: _XAllocID: Assert-makro \"ret != inval_id\" ei pidä paikkaansa.\n"));
-	}
-
 }
