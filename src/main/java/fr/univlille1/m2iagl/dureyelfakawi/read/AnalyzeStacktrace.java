@@ -40,6 +40,19 @@ public class AnalyzeStacktrace {
 		ligneAt=-1;
 		
 		String[] parts = stacktrace.getAbsolutePath().split("/");
+		findNumber(stacktrace);
+	}
+	
+	private void findNumber(File stacktrace){
+		String os = System.getProperty("os.name").toLowerCase();
+		String split = "";
+		
+		if(os.startsWith("win"))
+			split = "\\\\";
+		else
+			split = "/";
+		
+		String[] parts = stacktrace.getAbsolutePath().split(split);
 		
 		stacktraceNumber = parts[parts.length-1].split("\\.")[0];
 

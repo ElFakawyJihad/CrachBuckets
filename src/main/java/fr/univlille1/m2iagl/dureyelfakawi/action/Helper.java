@@ -3,16 +3,16 @@ package fr.univlille1.m2iagl.dureyelfakawi.action;
 import java.util.Map;
 
 public class Helper {
-	
+
 	public static String removeVersionNumber(String string){
 		String[] splited = string.split("/");
-		
+
 		String toBeReturned = "";
 		for(int i=0;i<splited.length-1;i++){
 			String stringSplited = splited[i];
 			toBeReturned += stringSplited.replaceAll("([0-9]|\\.|-)*", "") + "/";
 		}
-		
+
 		return toBeReturned + splited[splited.length-1];
 	}
 
@@ -39,30 +39,45 @@ public class Helper {
 	public static double getPointsFromNameSimilitude(String name1, String name2){
 		//System.out.println("Name1 : " + name1 + ", name2 : " + name2);
 		int points = 0;
-		
+
 		if(name1 == null || name2 == null){
 			return 0;
 		}
-		
-		try {
-			String[] name1Splitted = name1.split("_");
-			String[] name2Splitted = name2.split("_");
 
-			for(String name1Part : name1Splitted){
-				for(String name2Part : name2Splitted){
-					if(name1Part.equals(name2Part)){
-						points++;
-					}
+		String[] name1Splitted = name1.split("_");
+		String[] name2Splitted = name2.split("_");
 
+		for(String name1Part : name1Splitted){
+			for(String name2Part : name2Splitted){
+				if(name1Part.equals(name2Part)){
+					points++;
 				}
+
 			}
-		} catch(Exception e){
-			
-			System.out.println("Crash from Helper.getPointsFromNameSimilitude");
-			return 0;
 		}
 
 		return points;
+	}
+
+	public static String getFolderName(String path){
+
+		String split = "/";  
+
+		path = path.replace("/build/buildd/", "");
+		path = path.replace("/usr/lib/", "");
+
+		
+		return path.split(split)[0];
+	}
+
+	public static String getFilename(String libPath){
+
+		String split = "/";  
+
+		libPath = libPath.replace("/build/buildd/", "");
+		String[] splited = libPath.split(split);
+
+		return splited[splited.length-1].split("\\.")[0];
 	}
 
 	public static double getPointsFromCombinatedNameAndLineSimilitude(String name1, String name2, int line1, int line2){

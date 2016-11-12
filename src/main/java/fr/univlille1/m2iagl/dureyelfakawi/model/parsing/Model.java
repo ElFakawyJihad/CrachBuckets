@@ -15,7 +15,7 @@ public class Model {
 	private Similarities similarities;
 	
 	public Model(){
-		this.buckets = new HashMap<>();
+		this.buckets = new HashMap<Integer, Bucket>();
 	}
 	
 	public void setSimilarities(Similarities similarities){

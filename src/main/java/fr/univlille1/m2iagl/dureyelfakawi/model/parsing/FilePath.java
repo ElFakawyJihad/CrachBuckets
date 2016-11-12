@@ -23,5 +23,10 @@ public class FilePath {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "FilePath [name=" + name + ", parameters=" + parameters + "]";
+	}
 
 }

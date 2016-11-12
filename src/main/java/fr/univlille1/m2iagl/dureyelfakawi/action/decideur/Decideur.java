@@ -17,5 +17,7 @@ public abstract class Decideur {
 	}
 	
 	public abstract ValuesDecided decide(Map<Integer, Stacktrace> toBeAttributed);
+	
+	public abstract String decideStacktrace(Stacktrace stacktrace);
 
 }
