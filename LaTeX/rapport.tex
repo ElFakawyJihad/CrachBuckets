@@ -6,7 +6,7 @@
 % Licence Creative Commons
 % Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) 
 %
-\documentclass[10pt]{article}
+\documentclass{article}
 %% PACKAGES
 % Regles typographiques francaises
 \usepackage[french]{babel}
@@ -36,7 +36,7 @@
 % Les couleurs
 \usepackage{color}
 % Les algorithmes
-\usepackage{algpseudocode}
+\usepackage[ruled]{algorithm2e}
 
 %% COMMANDES
 % Profondeur de la table des matieres
@@ -52,12 +52,11 @@
 \begin{document}
 
 % Informations concernant le document
-\title{Ceci est un titre de document}
+\title{Analyse et tri de stacktraces pour la complétion du buckets}
 \author{Antonin DUREY, Jihad EL FAKAWI}
 \date{Novembre 2016}
 % Page de titre automatique
 \maketitle
-% Resume du document
 
 \newpage
 
@@ -98,15 +97,74 @@ Ce rapport présente ces travaux en 3 parties. La première est consacré au tra
 
 \subsection{Algorithmes}
 
-\begin{algorithmic}[]
-\If {$i\geq maxval$}
-    \State $i\gets 0$
-\Else
-    \If {$i+k\leq maxval$}
-        \State $i\gets i+k$
-    \EndIf
-\EndIf
-\end{algorithmic}
+\paragraph{}
+Nous avons implémenté 4 algorithmes différents permettant d'analyser des stacktraces et de les incorporer à des buckets déjà existants. 
+
+\paragraph{}
+Le premier est un algorithme aléatoire qui à chaque stacktrace à trier, associe un numéro de bucket alétaoire parmis ceux existants.
+~~\\
+
+\IncMargin{1em}
+\begin{algorithm}[H]
+\SetAlgoLined
+\DontPrintSemicolon
+\KwData{les buckets existants nommés $buckets$ et la liste des stacktraces à trier nommée $stacktracesToBeAttributed$}
+ \KwResult{une liste avec pour chaque stacktrace à trier le numéro du bucket auquel la stacktrace est associée}
+\SetKwData{Stacktrace}{stacktrace}
+\SetKwData{Result}{result}
+\SetKwFunction{GetRandomBucketId}{getRandomBucketId}
+\SetKwFunction{AddToResults}{addToResults}
+ initialization\;
+ \For{$stacktrace$ in $stacktracesToBeAttributed$}{
+   {\AddToResults{$stacktrace$, {\GetRandomBucketId{$buckets$}}}}\;
+  
+ }
+\caption{Algorithme d'attribution de buckets aléatoire}
+\end{algorithm}
+
+\paragraph{}
+Le second algorithme analyse, pour chaque stacktrace à trier, toutes ses lignes ainsi que toutes les lignes des stacktraces appartenant aux buckets, et attribue des points en fonction de la similitude entre les lignes. Ainsi, l'algorithme accumule des points de similitude par bucket. Pour chaque stacktrace, le bucket choisit est celui qui a le plus de points.
+~~\\
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\DontPrintSemicolon
+\KwData{les buckets existants nommés $buckets$ et la liste des stacktraces à trier nommée $stacktracesToBeAttributed$}
+ \KwResult{une liste avec pour chaque stacktrace à trier le numéro du bucket auquel la stacktrace est associée}
+\SetKwData{StacktracesToBeAttributed}{stacktracesToBeAttributed}
+\SetKwData{Result}{result}
+\SetKwData{Points}{points}
+\SetKwData{Map}{map}
+\SetKwFunction{GetPointsFromLibSimilitude}{getPointsFromLibSimilitude}
+\SetKwFunction{GetPointsFromFileSimilitude}{getPointsFromFileSimilitude}
+\SetKwFunction{GetPointsFromMethodSimilitude}{getPointsFromMethodSimilitude}
+\SetKwFunction{GetPointsFromLineSimilitude}{getPointsFromLineSimilitude}
+\SetKwFunction{AddToResults}{addToResults}
+
+ initialization\;
+ \For{$stacktraceToBeAttributed$ in $stacktracesToBeAttributed$}{
+	\For{$bucket$ in $buckets$}{
+		\Points$\leftarrow$ 0\;
+		\For{$stacktraceFromBucket$ in $bucket$}{
+			\For{$lineFromToBeAttributed$ in $stacktraceToBeAttributed$}{
+				\For{$lineFromBucket$ in $stacktraceFromBucket$}{
+					\Points$\leftarrow$ \Points + {\GetPointsFromLibSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
+					\Points$\leftarrow$ \Points + {\GetPointsFromFileSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
+					\Points$\leftarrow$ \Points + {\GetPointsFromMethodSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
+					\Points$\leftarrow$ \Points + {\GetPointsFromLineSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
+				}
+			}
+		}
+		{\PutIntoMap{\Map, \Points}}\;
+	
+
+	}
+	
+
+	
+ }
+\caption{Algorithme d'attribution de buckets basé sur le calcul de points apr rapport à la similitude des lignes des stacktraces}
+\end{algorithm}
 
 \subsection{Architecture}
 
