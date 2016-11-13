@@ -194,7 +194,7 @@ public class AnalyzeStacktrace {
 			String nameMethod = line.substring(index + 4);
 			int finMethod = nameMethod.indexOf('(');
 			String nameMethodWithoutParam = null;
-			ArrayList<Parameter> parameters =  new ArrayList<>();
+			ArrayList<Parameter> parameters =  new ArrayList<Parameter>();
 
 			if(finMethod == -1){
 				nameMethodWithoutParam = nameMethod.substring(0);

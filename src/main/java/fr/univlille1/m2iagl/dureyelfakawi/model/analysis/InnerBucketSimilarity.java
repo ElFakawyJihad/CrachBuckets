@@ -24,7 +24,7 @@ public class InnerBucketSimilarity {
 	}
 	
 	public void computeSimilar(){
-		for(Integer stacktraceKey : bucket.keySet()){
+		for(String stacktraceKey : bucket.keySet()){
 			
 		}
 	}

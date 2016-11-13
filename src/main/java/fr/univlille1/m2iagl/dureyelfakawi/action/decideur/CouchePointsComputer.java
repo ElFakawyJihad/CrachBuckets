@@ -14,7 +14,7 @@ public class CouchePointsComputer extends Thread {
 	
 	private boolean hasFinished;
 	
-	public BucketPointsComputer(CoucheStacktrace stacktrace, Couche couche){
+	public CouchePointsComputer(Stacktrace stacktrace, Couche couche){
 		this.stacktrace = stacktrace;
 		this.couche = couche;
 		hasFinished = false;

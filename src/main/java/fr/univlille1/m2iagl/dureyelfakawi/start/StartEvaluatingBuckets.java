@@ -52,9 +52,9 @@ public class StartEvaluatingBuckets {
 		for(String bucketKey : buckets.keySet()){
 			Bucket bucket = buckets.get(bucketKey);
 
-			List<Integer> stracktracesId = new ArrayList<>(bucket.keySet());
+			List<String> stracktracesId = new ArrayList<String>(bucket.keySet());
 
-			for(int stacktraceId : stracktracesId){
+			for(String stacktraceId : stracktracesId){
 
 				Stacktrace stacktrace = bucket.remove(stacktraceId);
 

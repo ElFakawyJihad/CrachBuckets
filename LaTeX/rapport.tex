@@ -37,6 +37,8 @@
 \usepackage{color}
 % Les algorithmes
 \usepackage[ruled]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
 
 %% COMMANDES
 % Profondeur de la table des matieres
@@ -123,7 +125,11 @@ Le premier est un algorithme aléatoire qui à chaque stacktrace à trier, assoc
 \end{algorithm}
 
 \paragraph{}
-Le second algorithme analyse, pour chaque stacktrace à trier, toutes ses lignes ainsi que toutes les lignes des stacktraces appartenant aux buckets, et attribue des points en fonction de la similitude entre les lignes. Ainsi, l'algorithme accumule des points de similitude par bucket. Pour chaque stacktrace, le bucket choisit est celui qui a le plus de points.
+Le second algorithme parse les buckets et stacktrace existants. C'est à dire qu'il stocke les informations ligne par ligne pour chaque stacktrace. Cela permet d'obtenir la librairie ou le fichier, la méthode et la ligne ou l'erreur s'est produite.
+
+\paragraph{}
+Dans un second temps, il analyse, pour chaque stacktrace à trier, toutes ses lignes ainsi que toutes les lignes des stacktraces appartenant aux buckets, et attribue des points en fonction de la similitude entre les lignes. Ainsi, l'algorithme accumule des points de similitude par bucket. Pour chaque stacktrace, le bucket choisit est celui qui a le plus de points.
+C'est cette seconde partie qui est présenté ci-dessous :
 ~~\\
 
 \begin{algorithm}[H]
@@ -134,36 +140,97 @@ Le second algorithme analyse, pour chaque stacktrace à trier, toutes ses lignes
 \SetKwData{StacktracesToBeAttributed}{stacktracesToBeAttributed}
 \SetKwData{Result}{result}
 \SetKwData{Points}{points}
-\SetKwData{Map}{map}
+\SetKwData{BucketsWithValue}{bucketsWithValue}
 \SetKwFunction{GetPointsFromLibSimilitude}{getPointsFromLibSimilitude}
 \SetKwFunction{GetPointsFromFileSimilitude}{getPointsFromFileSimilitude}
 \SetKwFunction{GetPointsFromMethodSimilitude}{getPointsFromMethodSimilitude}
 \SetKwFunction{GetPointsFromLineSimilitude}{getPointsFromLineSimilitude}
 \SetKwFunction{AddToResults}{addToResults}
+\SetKwFunction{PutIntoMap}{putIntoMap}
+\SetKwFunction{Initialize}{initialize}
+\SetKwFunction{AddToResults}{addToResults}
+\SetKwFunction{GetBucketWithHighestValue}{getBucketWithHighestValue}
 
  initialization\;
  \For{$stacktraceToBeAttributed$ in $stacktracesToBeAttributed$}{
+	\Initialize{$bucketsWithValue$}\;
 	\For{$bucket$ in $buckets$}{
-		\Points$\leftarrow$ 0\;
+		$points$ $\leftarrow$ 0\;
 		\For{$stacktraceFromBucket$ in $bucket$}{
 			\For{$lineFromToBeAttributed$ in $stacktraceToBeAttributed$}{
 				\For{$lineFromBucket$ in $stacktraceFromBucket$}{
-					\Points$\leftarrow$ \Points + {\GetPointsFromLibSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
-					\Points$\leftarrow$ \Points + {\GetPointsFromFileSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
-					\Points$\leftarrow$ \Points + {\GetPointsFromMethodSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
-					\Points$\leftarrow$ \Points + {\GetPointsFromLineSimilitude{$lineFromBucket$, $lineFromBucket$}}\;
+					$points$ $\leftarrow$ $points$ + {\GetPointsFromLibSimilitude{$lineFromBucket$, $lineFromToBeAttributed$}}\;
+					$points$ $\leftarrow$ $points$ + {\GetPointsFromFileSimilitude{$lineFromBucket$, $lineFromToBeAttributed$}}\;
+					$points$ $\leftarrow$ $points$ + {\GetPointsFromMethodSimilitude{$lineFromBucket$, $lineFromToBeAttributed$}}\;
+					$points$ $\leftarrow$ $points$ + {\GetPointsFromLineSimilitude{$lineFromBucket$, $lineFromToBeAttributed$}}\;
 				}
 			}
 		}
-		{\PutIntoMap{\Map, \Points}}\;
-	
-
+		{\PutIntoMap{$bucketsWithValue$, $bucket$, $points$}}\;
 	}
-	
+	$chosenBucket$ $\leftarrow$ \GetBucketWithHighestValue{$bucketsWithValue$}\;
+	\AddToResults{$map$, $chosenBucket$}\;
 
-	
  }
-\caption{Algorithme d'attribution de buckets basé sur le calcul de points apr rapport à la similitude des lignes des stacktraces}
+\caption{Algorithme d'attribution de buckets basé sur le calcul de points par rapport à la similitude des lignes des stacktraces}
+\end{algorithm}
+
+\paragraph{}
+Le troisième algorithme est une variante du second. Au lieu de calculer la somme des points, on calcule la moyenne des points en fonctionne du nombre de lignes de la stacktrace et du nombre de stacktraces dans un bucket. Cela donne donc un nombre de points moyen par ligne et par bucket. La fin de l'agorithme est la même : le bucket avec le plus de points est désigné.
+
+\paragraph{}
+Le quatrième et dernier algorithme et très différent. Il suppose davantage de stockage d'éléments. En effet, lors de la création des stacktraces, l'algorithme va stocker les librairies, fichiers et méthodes dans une structure sous forme de maps imbriquées. Ainsi, lors de l'attribution d'une liste, il n'y a plus besoin de parcourir chacune des lignes, mais seulement de regarder cette structure pour voir quels sont les éléments en commun.
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\DontPrintSemicolon
+\KwData{les buckets existants nommés $buckets$ et la liste des stacktraces à trier nommée $stacktracesToBeAttributed$}
+ \KwResult{une liste avec pour chaque stacktrace à trier le numéro du bucket auquel la stacktrace est associée}
+\SetKwData{StacktracesToBeAttributed}{stacktracesToBeAttributed}
+\SetKwData{Result}{result}
+\SetKwData{Points}{points}
+\SetKwData{BucketsWithValue}{bucketsWithValue}
+\SetKwFunction{GetLibsUsed}{getLibsUsed}
+\SetKwFunction{GetFilesUsed}{getFilesUsed}
+\SetKwFunction{GetFunctionsUsed}{getFunctionsUsed}
+\SetKwFunction{StacktraceUsedLib}{stacktraceUsedLib}
+\SetKwFunction{StacktraceUsedFileFromLib}{stacktraceUsedFileFromLib}
+\SetKwFunction{StacktraceUsedFunctionFromLibAndFile}{stacktraceUsedFunctionFromLibAndFile}
+\SetKwFunction{PutIntoMap}{putIntoMap}
+\SetKwFunction{AddToResults}{addToResults}
+\SetKwFunction{GetBucketWithHighestValue}{getBucketWithHighestValue}
+\SetKwFunction{Initialize}{initialize}
+
+ initialization\;
+ \For{$stacktraceToBeAttributed$ in $stacktracesToBeAttributed$}{
+	\Initialize{$bucketsWithValue$}\;
+	\For{$bucket$ in $buckets$}{
+		$points$ $\leftarrow$ 0\;
+		\For{$stacktraceFromBucket$ in $bucket$}{
+			\tcc*{La comparaison des stacktraces s'effectue maintenant grâce à la structure contenant les librairies, fichiers et fonctions présentes dans chaque stacktrace. Le parse de ces données a été effectué précédemment lors de la création de la stacktrace}
+			\For{$lib$ in \GetLibsUsed{$stacktracesToBeAttributed$}}{
+				\If{\StacktraceUsedLib{$stacktraceFromBucket$, $lib$}}{
+					$points$ $\leftarrow$ $points$ + 1\;
+					\For{$file$ in \GetFilesUsed{$stacktracesToBeAttributed$, $lib$}}{
+						\If{\StacktraceUsedFileFromLib{$stacktraceFromBucket$, $lib$, $file$}}{
+							$points$ $\leftarrow$ $points$ + 5\;
+							\For{$function$ in \GetFunctionsUsed{$stacktracesToBeAttributed$, $lib$, $file$}}{
+								\If{\StacktraceUsedFunctionFromLibAndFile{$stacktraceFromBucket$, $lib$, $file$, $function$}}{
+									$points$ $\leftarrow$ $points$ + 25\;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		\PutIntoMap{$bucketsWithValue$, $bucket$, $points$}\;
+	}
+	$chosenBucket$ $\leftarrow$ \GetBucketWithHighestValue{$bucketsWithValue$}\;
+	\AddToResults{$map$, $chosenBucket$}\;
+
+ }
+\caption{Algorithme d'attribution de buckets basé sur le calcul de points par rapport au nombre de librairies, fichiers et fonctions en commun}
 \end{algorithm}
 
 \subsection{Architecture}

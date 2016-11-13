@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.11.6)  13 NOV 2016 11:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.11.6)  13 NOV 2016 23:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -631,45 +631,45 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 )
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 48.
+less on input line 50.
 
 
 Package Fancyhdr Warning: \fancyfoot's `E' option without twoside option is use
-less on input line 49.
+less on input line 51.
 
 (./rapport.aux)
 \openout1 = `rapport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 54.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 9.49997pt on input line 52.
-LaTeX Info: Redefining \degres on input line 52.
-LaTeX Info: Redefining \dots on input line 52.
+(Font)              scaled to size 9.49997pt on input line 54.
+LaTeX Info: Redefining \degres on input line 54.
+LaTeX Info: Redefining \dots on input line 54.
 
 
 Package frenchb.ldf Warning: Please load the "natbib" package
-(frenchb.ldf)                BEFORE babel/frenchb; reported on input line 52.
+(frenchb.ldf)                BEFORE babel/frenchb; reported on input line 54.
 
-LaTeX Info: Redefining \up on input line 52.
+LaTeX Info: Redefining \up on input line 54.
 \AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring ON on input line 52.
+Package hyperref Info: Link coloring ON on input line 54.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -678,9 +678,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count108
 )
-LaTeX Info: Redefining \ref on input line 52.
-LaTeX Info: Redefining \pageref on input line 52.
-LaTeX Info: Redefining \nameref on input line 52.
+LaTeX Info: Redefining \ref on input line 54.
+LaTeX Info: Redefining \pageref on input line 54.
+LaTeX Info: Redefining \nameref on input line 54.
 
 (./rapport.out) (./rapport.out)
 \@outlinefile=\write4
@@ -695,4 +695,125 @@ LaTeX Info: Redefining \nameref on input line 52.
 \nofMPsegments=\count110
 \nofMParguments=\count111
 \everyMPshowfont=\toks20
-\MPscratchCnt=\co
+\MPscratchCnt=\count112
+\MPscratchDim=\dimen127
+\MPnumerator=\count113
+\makeMPintoPDFobject=\count114
+\everyMPtoPDFconversion=\toks21
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 16.41594pt on input line 62.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 11.39996pt on input line 62.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 62.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 62.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 62.
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 13.67995pt on input line 66.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 66.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 13.67995pt on input line 66.
+ (./rapport.toc
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 9.49997pt on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 9.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 9.
+)
+\tf@toc=\write5
+\openout5 = `rapport.toc'.
+
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 9.49997pt on input line 68.
+ [2]
+[3]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 94.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 11.39996pt on input line 94.
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--108
+
+ []
+
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 124.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 9.49997pt on input line 124.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 124.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+Underfull \hbox (badness 10000) in paragraph at lines 131--134
+
+ []
+
+[4]
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 7.59998pt on input line 233.
+
+Overfull \hbox (44.64304pt too wide) in paragraph at lines 233--233
+\T1/cmtt/m/n/10 stacktraceUsedFunctionFromLibAndFile($\OML/cmm/m/it/10 stacktra
+ceFromBucket$\T1/phv/m/sl/10 , 
+ []
+
+[5] [6]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 264.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 264.
+ (./rapport.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 264.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 264.
+Package rerunfilecheck Info: File `rapport.out' has not changed.
+(rerunfilecheck)             Checksum: 32E4B5F2D76F491A0F138B2EB0A8D581;933.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 264.
+ ) 
+Here is how much of TeX's memory you used:
+ 8327 strings out of 494924
+ 119706 string characters out of 6179708
+ 221592 words of memory out of 5000000
+ 11472 multiletter control sequences out of 15000+600000
+ 31113 words of font info for 42 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 46i,34n,51p,690b,776s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/antonin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt0800.600pk> </home
+/antonin/.texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk>{/usr/share/texl
+ive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/antonin/.texmf-var/fonts/pk/
+ljfour/jknappen/ec/ecrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/u
+hvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on rapport.pdf (7 pages, 81214 bytes).
+PDF statistics:
+ 252 PDF objects out of 1000 (max. 8388607)
+ 165 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 129 words of extra memory for PDF output out of 10000 (max. 10000000)
+

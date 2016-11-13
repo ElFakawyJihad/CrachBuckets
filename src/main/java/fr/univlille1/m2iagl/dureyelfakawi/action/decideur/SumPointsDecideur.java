@@ -43,7 +43,7 @@ public class SumPointsDecideur extends Decideur {
 	private double getStacktracePointsAccordingToBucket(Stacktrace toBeAttributed, Bucket bucket){
 
 		int points = 0;
-		for(int key : bucket.keySet()){
+		for(String key : bucket.keySet()){
 			Stacktrace stacktraceFromBucket = bucket.get(key);
 
 			points += getPointsBetweenTwoStacktraces(stacktraceFromBucket, toBeAttributed);
