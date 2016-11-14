@@ -65,6 +65,11 @@ public class AnalyzeStacktraceTest {
 	public void testGetLigne() {
 		assertEquals(81, new AnalyzeStacktrace().getLigne(LINE));
 	}
+	
+	@Test
+	public void testGetLigneWrong() {
+		assertEquals(-1, new AnalyzeStacktrace().getLigne(""));
+	}
 
 	@Test
 	public void testGetNumCouche() {

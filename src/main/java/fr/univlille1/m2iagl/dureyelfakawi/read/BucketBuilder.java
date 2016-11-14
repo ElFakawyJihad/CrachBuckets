@@ -30,8 +30,9 @@ public class BucketBuilder {
 			StacktraceBuilder stacktraceBuilder = new StacktraceBuilder(analyzeStacktrace);
 
 			Stacktrace stacktrace = stacktraceBuilder.build();
+					
 			
-			bucket.putStacktrace(analyzeStacktrace.getStacktraceName(), stacktrace);
+			bucket.addStacktrace(stacktrace);
 		}
 		
 		return bucket;

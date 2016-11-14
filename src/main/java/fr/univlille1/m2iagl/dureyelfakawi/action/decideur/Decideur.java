@@ -21,3 +21,5 @@ public abstract class Decideur {
 	public abstract String decideStacktrace(Stacktrace stacktrace);
 
 }
+
+

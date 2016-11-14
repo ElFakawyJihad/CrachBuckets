@@ -22,7 +22,6 @@ public class LibFileAndFunctionsDecideur extends Decideur{
 			Stacktrace stacktrace = toBeAttributed.get(key);
 
 			String valueDecided = decideStacktrace(stacktrace);
-			System.out.println("i : " + i++);
 			valuesDecided.put(key, valueDecided);
 			//return valuesDecided;
 		}

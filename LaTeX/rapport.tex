@@ -19,7 +19,7 @@
 % Dimensions de la page
 \usepackage{a4wide}
 % Creation des liens hypertextes dans le document
-\usepackage[colorlinks=true]{hyperref}
+\usepackage[]{hyperref}
 % Definition des entetes de pages
 \usepackage{fancyhdr}
 \pagestyle{fancyplain}
@@ -39,6 +39,14 @@
 \usepackage[ruled]{algorithm2e}
 \newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
 \SetCommentSty{mycommfont}
+% Les workflows
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, text width=5cm, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
 %% COMMANDES
 % Profondeur de la table des matieres
@@ -47,22 +55,36 @@
 \addtolength{\headheight}{1.5pt}
 % Definitions de commandes pour mettre en couleur
 %
-\fancyfoot[RO, LE]{Antonin DUREY et Jihad EL FAKAWI} 
+\fancyfoot[RO, LE]{Antonin DUREY et Jihad EL FAKAWY} 
 \fancyfoot[LO, RE]{Outils pour la Programmation des Logiciels} 
 
+ \frenchbsetup{StandardLists=true}
+
+\hypersetup{
+	colorlinks=true, %colorise les liens
+	breaklinks=false, %permet le retour à la ligne dans les liens trop longs
+	urlcolor= blue,  %couleur des hyperliens
+	linkcolor= black, %couleur des liens internes
+	plainpages=false  %pour palier à "Bookmark problems can occur when you have duplicate page numbers, for example, if you have a page i and a page 1."
+}
 
 \begin{document}
 
 % Informations concernant le document
-\title{Analyse et tri de stacktraces pour la complétion du buckets}
-\author{Antonin DUREY, Jihad EL FAKAWI}
-\date{Novembre 2016}
+\title{Analyse et insertion de stacktraces dans des buckets pour la correction d'erreurs}
+\author{Antonin DUREY, Jihad EL FAKAWY}
+\date{15 Novembre 2016}
 % Page de titre automatique
 \maketitle
 
+\begin{figure}[h]
+   \includegraphics[scale=0.55]{Images/logo.png}
+\end{figure}
+
+
 \newpage
 
-% Generation de la table des mati\`eres
+% Generation de la table des matières
 \tableofcontents
 
 \newpage
@@ -70,22 +92,22 @@
 \addcontentsline{toc}{section}{Introduction}
 
 \paragraph{}
-De nos jours, les crashs de logiciels ou de programmes sont quotidiens et les grosses applications doivent faire face à des milliers de rapport de crashs. L’envoi de ces rapports aux développeurs est néanmoins essentiel pour permettre à ceux-ci de corriger les problèmes et failles. Pour simplifier l’analyse de ces rapports, ils sont triés par bucket. Un bucket rassemble ainsi une série de rapports dont la source du problème est très certainement la même. Grâce à cela, lorsque les développeurs analyserons les rapports contenus dans chacun des bucket, ils disposeront d’une grande quantité d’information pour corriger le problème.
+De nos jours, les crashs de logiciels ou de programmes sont quotidiens et les grosses applications doivent faire face à des milliers de rapport de crashs. L’envoi de ces rapports aux développeurs est néanmoins essentiel pour permettre à ceux-ci de corriger les problèmes et failles. Pour simplifier l’analyse de ces rapports, ceux-ci sont triés par bucket. Un bucket rassemble ainsi une série de rapports dont la source du problème est la même. Grâce à cela, lorsque les développeurs analyserons les rapports contenus dans chacun des bucket, ils disposeront d’une grande quantité d’information pour corriger le problème.
 
 
 \paragraph{}
-Dans le cadre du module OPL de notre Master 2 IAGL, nous avons été amenés à réaliser un projet qui porte sur l’analyse de crash. Sur ce projet, nous avons implémenté le tri de rapports d’erreurs dans des buckets.
+Dans le cadre du module Outils pour la Programmation des Logiciels de notre Master 2 IAGL, nous avons été amenés à réaliser un projet qui porte sur l’analyse de crash. Sur ce projet, nous avons implémenté le tri de rapports d’erreurs dans des buckets.
     
     
 \paragraph{}
-Pour trier ces rapports, nous avons implémenté plusieurs algorithmes. Dans un premier temps, nous les avons triés de manière aléatoire. Dans un second temps, nous avons attribué un certain nombre de points aux buckets en fonction des points communs entre le rapport à trier et les rapports contenus dans le bucket. Le bucket choisi est alors celui dont le score est le plus élevé. Le troisième algorithme est une variante du second, il calcule la moyenne des points par nombre de lignes d’erreurs et par nombre de rapports dans un bucket.
+Pour trier ces rapports, nous avons implémenté quatre algorithmes. Dans un premier temps, nous les avons triés de manière aléatoire. Dans un second temps, nous avons attribué un certain nombre de points aux buckets en fonction des points communs entre le rapport à trier et les rapports contenus dans les buckets. Le bucket choisi est alors celui dont le score est le plus élevé. Le troisième algorithme est une variante du second. Il calcule la moyenne des points par nombre de lignes d’erreurs et par nombre de rapports dans un bucket. Enfin, le dernier algorithme stocke les données sous une autre forme avant d'attribuer les stacktraces selon la similitude avec les données nouvellement stockées.
 
 
 \paragraph{}
-L’évaluation de nos résultats a été facilité par l’infrastructure mise en place. En effet, nous pouvions soumettre nos résultat, c’est-à-dire l’attribution des rapports d’erreurs à un bucket précis. Grâce à cela, nous avons constaté que notre troisième et dernier algorithme est plus performant que le second, lui même plus performant que le premier. Néanmoins, ces 2 dernières solutions présentent l’inconvénient de prendre un temps conséquent lors du tri - plusieurs dizaines de secondes avec les données fournies.
+L’évaluation de nos résultats a été facilité par l’infrastructure mise en place. En effet, nous pouvions soumettre nos résultat, c’est-à-dire l’attribution des rapports d’erreurs à un bucket précis. Grâce à cela, nous avons constaté que notre quatrième algorithme est plus performant que le troisième et le second, eux-même plus performants que le premier. De plus, ce dernier algorithme est beaucoup plus efficace que les précédents. Nous avons également testé nos algorithmes en vérifiant le set d'apprentissage, c'est-à-dire les buckets qui nous avaient été fournis.
 
 \paragraph{}
-Ce rapport présente ces travaux en 3 parties. La première est consacré au travail technique qui a été effectué. La seconde se concentre sur l'évaluation des résultats et des algorithmes. Enfin, la troisième et dernière partie traite des améliorations et des évolutions possibles du projet.
+Ce rapport présente ces travaux en 2 parties. La première est consacré au travail technique qui a été effectué. La seconde se concentre sur l'évaluation des résultats et des algorithmes. La conclusion présente quant à elle des possibilités d'amélioration.
 
 \newpage
 
@@ -93,9 +115,65 @@ Ce rapport présente ces travaux en 3 parties. La première est consacré au tra
 
 \subsection{But}
 
+\paragraph{}
+Une \textbf{stacktrace} - ou trace d'appels en français - représente la pile d'exécution photographiée à un moment \textit{t} lors de l'exécution d'un programme. Lorsqu'une erreur survient lors de l'exécution d'un programme, il est désormais assez courant que la stacktrace soit envoyée automatiquement aux développeurs.
+
+\paragraph{}
+Pour les développeurs, le traitement des stacktraces ainsi reçues est très important. Il permet de mettre à jour de nouveaux bugs pas forcément connus auparavant et d'emmagasiner des informations sur ceux-ci pour pouvoir les résoudre le plus rapidement possible. Néanmoins, la première tâche lors de la réception d'une stacktrace est de comprendre à quel bug celle-ci fait référence. Cela permettra par la suite de créer des groupes de stacktraces - nommés \textbf{buckets} - représentant la même erreur, toujours dans le but d'obtenir un maximum d'informations sur une erreur.
+
+\paragraph{}
+C'est sur cette opération de rassemblement de buckets que nous intervenons. Notre but est, à partir de buckets déjà existant, d'intégrer des stacktraces à ces buckets. Pour cela, nous avons implémenté 4 algorithmes différents (\textit{voir plus loin}) qui permettent, pour une liste de stacktraces, d'inclure chacune de ces stacktraces au bucket qui lui correspond le mieux.
+
+\paragraph{}
+Tout d'abord, nous commençons par parser des fichiers correspondant à des stacktraces, dont voici un exemple :
+
+
+\begin{figure}[h]
+   \includegraphics[scale=0.4]{Images/stacktrace.png}
+   \caption{Exemple de stacktrace avec ses informations utiles}
+\end{figure}
+
+\paragraph{}
+Les données surlignées sont les données qui nous intéressent dans notre travail. Elles représentent le nom de la fonction, ses paramètres, ainsi que le chemin complet et la ligne où a eu lieu l'erreur. Ces données sont généralement présentes pour chaque couche de la pile d'exécution. Une fois ces données analysées, nous pouvons alors trier les stacktraces.
 
 \subsection{Overview}
 
+\paragraph{}
+Le workflow suivant présente l'ensemble de notre travail pendant ce projet. Il reprend non seulement la partie sur les algorithmes (\textit{voir partie suivante}) permettant de déterminer le meilleur bucket pour une stacktrace, mais il traite également des étapes permettant de traiter les données.
+
+~~\\
+\begin{tikzpicture}[node distance=2cm]
+
+\node (start) [startstop] {Start};
+\node (in1) [io, below of=start] {Input : 2 dossiers représentant les buckets et les stacktraces à trier, l'algorithme à lancer et le type d'évaluation à faire};
+\node (pro1) [process, below of=in1, yshift=-0.5cm] {Transformation des dossiers en données manipulables};
+\node (dec1) [decision, below of=pro1, yshift=-1.7cm] {switch(type d'évaluation)};
+\node (pro2a) [process, right of=dec1, xshift=6.5cm] {Lancement de l'algo choisi en entrée sur les données};
+\node (pro3a) [process, below of=pro2a] {Ecriture des associations stacktrace - bucket dans un fichier};
+\node (pro2b) [process, below of=dec1, yshift=-2cm] {Lancement de l'algo choisi en entrée sur les buckets eux-mêmes};
+\node (out1) [io, below of=pro3a, text width=2cm] {Output : Le fichier qui contient les associations};
+\node (out2) [io, below of=pro2b, text width=2cm] {Output : Affichage à l'écran des résultats};
+\node (stop) [startstop, below of=out1] {Stop};
+
+\draw [arrow] (start) -- (in1);
+\draw [arrow] (in1) -- (pro1);
+\draw [arrow] (pro1) -- (dec1);
+\draw [arrow] (dec1) -- node[anchor=south] {Evaluer un nouvel échantillon} (pro2a);
+\draw [arrow] (dec1) -- node[anchor=east] {Evaluer les buckets} (pro2b);
+\draw [arrow] (pro2a) -- (pro3a);
+\draw [arrow] (pro3a) -- (out1);
+\draw [arrow] (pro2b) -- (out2);
+\draw [arrow] (out2) -- (stop);
+\draw [arrow] (out1) -- (stop);
+
+\end{tikzpicture}
+
+\paragraph{}
+Comme le workflow le montre, il existe 2 manières de travailler pour l'algorithme choisi : 
+\begin{itemize}
+\item Il travaille avec un dossier en entrée représentant les buckets et un autre dossier représentant les stacktraces à trier.
+\item Il travaille avec un dossier en entrée représentant les buckets et analyse ces mêmes buckets.
+\end{itemize}
 
 \subsection{Algorithmes}
 
@@ -103,7 +181,7 @@ Ce rapport présente ces travaux en 3 parties. La première est consacré au tra
 Nous avons implémenté 4 algorithmes différents permettant d'analyser des stacktraces et de les incorporer à des buckets déjà existants. 
 
 \paragraph{}
-Le premier est un algorithme aléatoire qui à chaque stacktrace à trier, associe un numéro de bucket alétaoire parmis ceux existants.
+Le premier est un algorithme aléatoire qui à chaque stacktrace à trier, associe un numéro de bucket aléatoire parmi ceux existants.
 ~~\\
 
 \IncMargin{1em}
@@ -125,11 +203,11 @@ Le premier est un algorithme aléatoire qui à chaque stacktrace à trier, assoc
 \end{algorithm}
 
 \paragraph{}
-Le second algorithme parse les buckets et stacktrace existants. C'est à dire qu'il stocke les informations ligne par ligne pour chaque stacktrace. Cela permet d'obtenir la librairie ou le fichier, la méthode et la ligne ou l'erreur s'est produite.
+Le second algorithme parse les buckets et stacktraces existants. C'est à dire qu'il stocke les informations ligne par ligne pour chaque stacktrace. Cela permet d'obtenir la librairie ou le fichier, la méthode et la ligne ou l'erreur s'est produite.
 
 \paragraph{}
 Dans un second temps, il analyse, pour chaque stacktrace à trier, toutes ses lignes ainsi que toutes les lignes des stacktraces appartenant aux buckets, et attribue des points en fonction de la similitude entre les lignes. Ainsi, l'algorithme accumule des points de similitude par bucket. Pour chaque stacktrace, le bucket choisit est celui qui a le plus de points.
-C'est cette seconde partie qui est présenté ci-dessous :
+C'est cette seconde partie qui est présenté page suivante :
 ~~\\
 
 \begin{algorithm}[H]
@@ -181,6 +259,8 @@ Le troisième algorithme est une variante du second. Au lieu de calculer la somm
 \paragraph{}
 Le quatrième et dernier algorithme et très différent. Il suppose davantage de stockage d'éléments. En effet, lors de la création des stacktraces, l'algorithme va stocker les librairies, fichiers et méthodes dans une structure sous forme de maps imbriquées. Ainsi, lors de l'attribution d'une liste, il n'y a plus besoin de parcourir chacune des lignes, mais seulement de regarder cette structure pour voir quels sont les éléments en commun.
 
+~~\\
+e
 \begin{algorithm}[H]
 \SetAlgoLined
 \DontPrintSemicolon
@@ -233,31 +313,225 @@ Le quatrième et dernier algorithme et très différent. Il suppose davantage de
 \caption{Algorithme d'attribution de buckets basé sur le calcul de points par rapport au nombre de librairies, fichiers et fonctions en commun}
 \end{algorithm}
 
+\paragraph{}
+Le premier algorithme basé sur l'aléatoire est, de manière assez logique, non déterministe. Les trois autres algorithmes sont déterministes.
+
 \subsection{Architecture}
+
+\paragraph{}
+Pour ces travaux, nous avons choisi le langage Java. Il a permis de gagner du temps sur la structure des données manipulables car nous étions très compétents dans ce langage, Ainsi, nous avons pu nous concentrer sur le coeur du problème, à savoir l'analyse des données.
+
+\paragraph{}
+Nous n'avons utilisé aucune librairie dans notre architecture pour développer notre solution. La seule librairie utilisée est JUnit pour tester l'analyse syntaxique des fichiers (\textit{voir plus loin}).
+
+\paragraph{}
+Notre architecture se subdivise en 7 packages dont voici la liste :
+
+\begin{itemize}
+\item \textit{action} : Contient différentes actions nécessaires au fonctionnement de l'application comme la Factory ou le Writer pour l'écriture dans un fichier
+\item \textit{action.decideur} : Contient les différents algorithmes de décision qui permettent d'affecter un bucket à une stacktrace.
+\item \textit{model.analysis} : Contient les données créées pendant l'attribution d'un bucket à une stacktrace.
+\item \textit{model.parsing} : Contient les données créées pendant l'analyse syntaxique.
+\item \textit{read} : Contient le code permettant de transformer les fichiers en données manipulables.
+\item \textit{read.exception} : Contient les exceptions renvoyées lors de la transformation des fichiers en données manipulables.
+\item \textit{start} : Contient les programmes pouvant être lancés : l'analyse sur les buckets et l'analyse d'un nouvel ensemble de stacktrace.
+\end{itemize}
+
+\paragraph{}
+Pour résumer, notre architecture est divisée en 2 parties :
+\begin{itemize}
+\item Une première partie transformation des fichiers en données manipulables.
+\item Une seconde partie qui attribue à des stacktraces un bucket.
+\end{itemize}
 
 \subsection{Implémentation}
 
+\paragraph{}
+Dans notre implémentation, nous avons mis en place un système de pattern matcher pour récupérer les informations qui nous serviront par la suite. Le tableau ci dessous récapitule les patterns et les informations que nous en retirons.
+~~\\
+
+\begin{tabular}{|r|l|}
+  \hline
+  Pattern & Données \\
+  \hline
+  	{ \#\textbf{[0-9]*} } & Le numéro de la couche de la pile d'exécution \\
+  \hline
+  	{ in \textbf{[a-z | A-Z | 0-9]*} } & Le nom de la méthode \\
+  \hline
+  	{ at \textbf{[a-z | A-Z | 0-9]*} } & Le chemin du fichier \\
+  \hline
+	{ from \textbf{[a-z | A-Z | 0-9]*} } & Le chemin de la librairie \\
+  \hline
+	{ [:| .]\textbf{[0-9]*} } & Le numéro de ligne de l'erreur \\
+  \hline
+\end{tabular}
+
+\paragraph{}
+Notre implémentation comprend aussi une classe abstraite nommée \textit{Decideur} montrée ci-dessous.
+
+\begin{figure}[h]
+   \includegraphics[scale=0.6]{Images/decideur.png}
+   \caption{Decideur.java}
+\end{figure}
+
+\paragraph{}
+L'utilisation d'une classe abstraite nous a permis de laisser la main à l'utilisateur sur quel algorithme il désirait tester. Chacune des classes représentant un algorithme doit implémenter cette classe abstraite. Dans notre implémentation, nous disposons donc de 4 classes (\textit{RandomDecideur}, \textit{SumPointsDecideur}, \textit{AveragePointsDecideur} et \textit{LibFileAndFunctionsDecideur}) qui représentent chacun des algorithmes présentés précédemment.
+
+
 \subsection{Utilisation}
 
+\paragraph{}
+Notre application dispose de 2 classes principales pouvant êtres lancées :
+
+\begin{itemize}
+\item \textit{StartDecideurOnStacktraces} est l'algorithme qui permet d'attribuer un bucket à de nouvelles stacktraces.
+\item \textit{StartEvaluatingBuckets} permet, comme son nom l'indique, d'évaluer les buckets déjà existants.
+\end{itemize}
+
+\subsection{Documentation}
+
+\paragraph{}
+Nous avons documenté nos projet avec de la Javadoc, qui se trouve \href{http://documentationjava.alwaysdata.net/}{ici}.
 \section{Évaluation}
+
+\paragraph{}
+Comme vu précédemment, notre projet se décompose en 2 parties : la transformation des fichiers en données manipulables et l'attribution d'un bucket aux stacktraces. Pour évaluer cette première partie, nous avons effectué des tests unitaires. Quant à la seconde, nous disposions de 2 manières : le serveur de validation mis en place par notre enseignant, ou l'analyse de l'ensemble d'apprentissage, c'est-à-dire des buckets. Pour évaluer ces éléments, nous parlerons ci-dessous de leur efficacité, de leur complexité et de leur performance.
+
+\subsection{Tests unitaires}
+
+\paragraph{}
+Nous avons réalisé de nombreux tests unitaires portant sur l'analyse syntaxique des fichiers. Voici les statistiques de coverage concernant ces tests unitaires.
+
+\begin{figure}[h]
+   \includegraphics[scale=0.8]{Images/coverage.png}
+   \caption{Couverture des tests unitaires}
+\end{figure}
+
+\paragraph{}
+Ces tests couvrent de très nombreux cas pour récupérer la ligne, la fosnction, le fichier d'une erreur, ou d'autres éléments importants. Deux tests unitaires sont présentés ci-dessous :
+
+\begin{figure}[h]
+   \includegraphics[scale=0.7]{Images/tests.png}
+   \caption{Quelques tests unitaires}
+\end{figure}
+
 
 \subsection{Efficacité}
 
+Le premier critère de nos algorithmes est l'efficacité, c'est à dire le temps d'exécution. Avant toute chose, il importe de dire que, dans la présentation de nos résultats, nous n'avons pas inclut les temps nécessaire à l'analyse syntaxique des fichiers pour les transformer en données manipulables. Nous avons fait cela pour plusieurs raisons : tout d'abord, ce temps ne fait pas clairement partie du temps d'exécution des algorithmes. De plus, le temps d'analyse syntaxique de fichiersest constant selon l'algorithme de décision, environ 2 secondes.
+
+Nous avons tout d'abord testé l'efficacité des algorithmes sur le premier set de stacktraces - de taille 208. Voici les temps obtenu à pour l'exécution de chacun des algorithmes :
+
+\begin{itemize}
+\item Algorithme aléatoire : \textbf{9 ms}
+\item Algorithme de somme des points : > 2 minutes
+\item Algorithme de moyenne des points : > 2 minutes
+\item Algorithme de comparaison des librairies, fichiers et fonctions utilisés : \textbf{550 ms}
+\end{itemize}
+
+\paragraph{}
+En terme de rapidité, l'algorithme aléatoire et l'algorithme de comparaison des librairies, fichiers et fonctions utilisés sont donc bien plus efficaces que les 2 autres algorithmes. Ces derniers sont en l'état inutilisables en conditions réelles. En effet, le nombre de stacktrace étant plus important, ils seraient très peu efficaces et donc inutiles. Par ailleurs, il est tout à fait normal que les second et troisième algorithmes aient le même temps d'exécution, la manière d'attribution ne variant que de manière infime.
+
+Nous avons également testé l'efficacité de ces algorithmes avec le second système d'évaluation, c'est à dire l'évaluation des buckets déjà créés. Le set de buckets que nous avions dès le début de projet était constitué de 1 251 stacktraces. Voici les temps obtenus :
+
+\begin{itemize}
+\item \textit{Algorithme aléatoire} : \textbf{55 ms}
+\item \textit{Algorithme de somme des points} : entre 1h30 et 2h
+\item \textit{Algorithme de moyenne des points} : entre 1h30 et 2h 
+\item \textit{Algorithme de comparaison des librairies, fichiers et fonctions utilisés} : \textbf{2.5 s}
+\end{itemize}
+
+Avec ces résultats, le premier et dernier algorithme se trouvent toujours dans des temps d'exécution raisonnables et même intéressants. Les deux autres algorithmes sont par contre clairement improductifs si aucune amélioration n'est faite.
+
 \subsection{Complexité}
 
+\paragraph{}
+La complexité des algorithmes est un élément très important à prendre en compte. Comme nous ne pouvons pas tester sur des échantillons immenses, faute de données, c'est cela qui déterminera si nos algorithmes seront efficaces dans des cas d'utilisation réels.
+
+Pour présenter la complexité de nos différents algorithmes, nous estimerons que les comparaisons de chaîne de caractères, recherche de clef dans une table de hachage, calcul d'un nombre aléatoire et autres opérations élémentaires s'effectuent en temps constant noté \textit{t}. Ci-dessous sont présentés les complexités des algorithmes :
+
+\begin{itemize}
+\item \textit{Algorithme aléatoire} : nombre de stacktrace à attribuer * t
+\item \textit{Algorithme de somme des points} : nombre de stacktrace à attribuer * nombre de buckets * nombre de stacktraces dans chacun des buckets * nombre de lignes de la stacktrace du bucket * nombre de lignes de la stacktrace à attribuer * t
+\item \textit{Algorithme de moyenne des points} : idem que précédemment
+\item \textit{Algorithme de comparaison des librairies, fichiers et fonctions utilisés} : nombre de stacktrace à attribuer * nombre de buckets * nombre de stacktraces dans chacun des buckets * nombre de librairies en commun au 2 stacktraces * nombre de fichiers en commun à la librairie * nombre de fonction en commun au fichier * t
+\end{itemize}
+
+\paragraph{}
+Les complexités sont assez logiquement polynomiales. Comme les calculs ci-dessus nous y faisaient penser, les 2 algorithmes les moins efficaces ont une complexité très grande, c'est-à-dire que dès que l'on modifie un paramètre ou la taille d'un paramètre, le temps d'exécution augmente. 
+
+\paragraph{}
+Le dernier algorithme est à première vu aussi complexe voire plus complexe que les autres car il possède plus de variables dans la formule de complexité. Néanmoins, il faut comprendre que si les deux stacktraces comparées n'ont aucune librairie en commun, l'algorithme ne calculera rien et sera donc très court pour cette itération. L'algorithme ne va réellement prendre plus de temps que lorsque les deux stacktraces comparées auront des librairies, des fichiers, et pourquoi pas des fonctions en commun. Ainsi, dans de très nombreux cas, l'algorithme sera (très) rapide.
+
+\paragraph{}
+L'algorithme aléatoire a une complexité très simple. Il suffit en effet de calculer un id de bucket aléatoire pour chaque stacktrace à attribuer.
+
 \subsection{Performance}
-334/1248
 
-\section{Améliorations}
+\paragraph{}
+Dans un dernier temps, nous avons estimé la performance de nos algorithmes, c'est à dire combien de stacktraces à attribuer sont correctement placées. Pour cela, nous nous sommes servis du validateur mis en ligne par notre enseignant dans un premier temps. Voici les résultats :
 
-\subsection{Solutions existantes}
+\begin{itemize}
+\item \textit{Algorithme aléatoire} : 2 stacktraces convenablement attribuées sur 108
+\item \textit{Algorithme de somme des points} : 3/108
+\item \textit{Algorithme de moyenne des points} : \textbf{22/108}
+\item \textit{Algorithme de comparaison des librairies, fichiers et fonctions utilisés} : \textbf{23/108}
+\end{itemize}
 
-\subsection{Idées d'algorithmes}
+\paragraph{}
+De manière générale, ces résultats sont insuffisants, voir décevants, c'est-à-dire que les algorithmes ne pourraient pas être utilisés dans de vrais cas. Cela étant dit, il y a une différence énorme entre les deux premiers algorithmes et les 2 suivants.
 
+\paragraph{}
+Le premier algorithme étant aléatoire, les résultats varient légèrement mais restent toujours inférieurs à 10. En effet, comme il existe plus de 200 buckets, il est assez rare que le bucket choisi aléatoirement soit le bon. Cet algorithme n'est donc pas performant.
 
+\paragraph{}
+Le second algorithme fait un calcul de somme de points pour trouver le bucket le plus adéquat. Néanmoins, ne jamais diviser par la taille d'un bucket ou la taille d'une stacktrace tend à favoriser les buckets les plus gros ayant des stacktraces les plus grosses. Ainsi, en analysant les résultats de cet algorithme à la main, nous nous sommes aperçus que certains buckets revenaient de manière récurrente dans l'attribution. Après vérification, il s'avère que ce sont bien les buckets les plus gros ayant les stacktraces les plus grosses. Cette vérification nous amène à dire que cet algorithme n'est pas non plus performant.
 
+\paragraph{}
+Le troisième algorithme possède 22 bonnes réponses sur 108, ce qui est de l'ordre de 20\%. Bien que cela soit mauvais, comme dit précédemment, on constate une réelle amélioration par le simple fait de diviser le nombre de points obtenus par la taille des buckets et par la taille de chaque stacktrace des buckets.
+
+\paragraph{}
+Le quatrième algorithme, bien que très différent, propose un résultat similaire - 23 bonnes réponses contre 22.
+
+\paragraph{}
+Pour essayer de différencier ces 2 derniers algorithmes, nous avons analysé les buckets avec 3 algorithmes, voici les résultats : 
+
+\begin{itemize}
+\item \textit{Algorithme aléatoire} : 8 stacktraces convenablement attribuées sur 1251
+\item \textit{Algorithme de somme des points} : Non effectué
+\item \textit{Algorithme de moyenne des points} : 334/1251
+\item \textit{Algorithme de comparaison des librairies, fichiers et fonctions utilisés} : 536/1251
+\end{itemize}
+
+\paragraph{}
+Ces résultats sont très intéressants. Ils démontrent que malgré la proximité des résultats dans le cas précédent, le dernier algorithme est ici plus d'une fois et demi plus performant, ce qui est très important. A noter que nous n'avons pas lancé cette évaluation avec le second algorithme. En effet, la complexité étant identique, nous aurions mis probablement le même temps que le troisième algorithme pour avoir des résultats, tout en sachant pertinemment que ceux-ci auraient été moins bons.
+
+\paragraph{}
+Enfin, nous avons fait le choix de ne tester que la validité des buckets de taille supérieure ou égal à 3. Ainsi, lorsque chacune des stacktraces seraient enlevées du bucket pour pouvoir la tester, il resterait au moins 2 stacktraces dans le bucket pour permettre à l'algorithme d'attribuer le bucket correspondant. Le résultat ainsi obtenu est de \textbf{513/1062}, ce qui fait monter le pourcentage de stacktrace correctement attribuées \textbf{à près de 50\%}.
+
+~~\\
+~~\\
+
+\paragraph{}
+Si nous rassemblons toutes ces analyses, il est clair que \textbf{le quatrième algorithme} (\textit{Algorithme de comparaison des librairies, fichiers et fonctions utilisés}) \textbf{est le plus intéressant}. Il est en effet le plus performant et l'un des plus efficaces. Les autres algorithmes sont moins intéressants voir inutilisables.
+
+\clearpage
 \section*{Conclusion}
 \addcontentsline{toc}{section}{Conclusion}
+
+\paragraph{}
+Durant ce projet, nous avons travaillé sur les stacktraces créées lors de l'apparition d'un bug ou d'une erreur dans un programme. Ces travaux nous ont permis de mettre en évidence l'importance du tri des stacktraces pour permettre aux développeurs d'obtenir un maximum d'informations sur les erreurs rencontrées par les utilisateurs.
+
+\paragraph{}
+Notre travail permet ainsi de trier des stacktraces et de les attribuer à un bucket existant. Cela implique de devoir analyser syntaxiquement les fichiers pour en ressortir les données importantes, mais également de pouvoir lancer un algorithme qui fera l'attribution. À ce titre, nous avons développé 4 algorithmes répondant à ce besoin.
+
+\paragraph{}
+Nous avons ensuite évalué ces différents algorithmes. Bien que les résultats globaux soient quelque peu décevants, il est clair que notre quatrième algorithme (\textit{Algorithme de comparaison des librairies, fichiers et fonctions utilisés}) est le plus intéressant. En effet, il répond au besoin posé, est efficace et assez performant.
+
+\paragraph{}
+Les axes d'améliorations de ce projet sont multiples. Il peut être intéressant de regarder les données dont nous ne nous servons pas actuellement pour voir si elles peuvent avoir une importance quelconque. Dans un second temps, il est nécessaire d'améliorer les algorithmes de décision en étant plus précis sur les points à attribuer selon les éléments que deux stacktraces ont en commun. Enfin, il est probable que d'autres solutions existent, des solutions auxquelles nous n'aurions pas pensé et qui seraient encore plus performantes et plus efficaces.
+
+
 
 
 

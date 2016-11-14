@@ -28,6 +28,7 @@ public class StacktracesReader {
 	public String getName(){
 		return this.folder[position].getName();
 	}
+
 	
 	
 	public boolean hasNextFile(){
